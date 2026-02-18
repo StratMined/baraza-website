@@ -1,0 +1,1779 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Baraza Mining Forum — Les Rencontres Africaines de l'Industrie Minière Responsable</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C8963E;
+  --gold-light: #E8C777;
+  --gold-dark: #8B6914;
+  --earth: #2C1810;
+  --earth-mid: #4A2E1F;
+  --charcoal: #1A1A1A;
+  --slate: #2D2D2D;
+  --ivory: #FAF6F0;
+  --ivory-warm: #F5EDE0;
+  --copper: #B87333;
+  --teal: #0A6E5C;
+  --teal-light: #0D8A72;
+  --white: #FFFFFF;
+  --text-muted: #8A8077;
+  --border-subtle: rgba(200,150,62,0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--charcoal);
+  color: var(--ivory);
+  overflow-x: hidden;
+}
+
+/* ===== NAVIGATION ===== */
+.nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 1rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.4s ease;
+  background: transparent;
+}
+
+.nav.scrolled {
+  background: rgba(26,26,26,0.95);
+  backdrop-filter: blur(20px);
+  padding: 0.7rem 3rem;
+  box-shadow: 0 2px 30px rgba(0,0,0,0.3);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.logo-mark {
+  width: 48px;
+  height: 48px;
+  position: relative;
+}
+
+.logo-mark svg { width: 100%; height: 100%; }
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.logo-text .brand {
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  line-height: 1.1;
+}
+
+.logo-text .sub {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: var(--gold-light);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--ivory);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: color 0.3s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gold);
+  transition: width 0.3s;
+}
+
+.nav-links a:hover::after { width: 100%; }
+.nav-links a:hover { color: var(--gold); }
+
+.nav-cta {
+  background: var(--gold) !important;
+  color: var(--earth) !important;
+  padding: 0.6rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+  transition: all 0.3s !important;
+}
+
+.nav-cta:hover {
+  background: var(--gold-light) !important;
+  transform: translateY(-1px);
+}
+
+.nav-cta::after { display: none !important; }
+
+.lang-toggle {
+  background: none;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 0.35rem 0.7rem;
+  border-radius: 3px;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  transition: all 0.3s;
+}
+
+.lang-toggle:hover {
+  background: var(--gold);
+  color: var(--earth);
+}
+
+/* ===== HAMBURGER MENU ===== */
+.nav-hamburger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  position: relative;
+  z-index: 9999;
+}
+
+.nav-hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--gold);
+  margin: 5px 0;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+.nav-hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+.nav-hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.nav-hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Mobile nav overlay */
+.nav-links.mobile-open {
+  display: flex !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.8rem;
+  background: rgba(26,26,26,0.98);
+  z-index: 9998;
+  padding: 4rem 2rem;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.nav-links.mobile-open li {
+  list-style: none;
+  text-align: center;
+}
+
+.nav-links.mobile-open a {
+  font-size: 1.3rem;
+  color: var(--ivory);
+  display: block;
+  padding: 0.5rem 1rem;
+}
+
+.nav-links.mobile-open .nav-cta {
+  margin-top: 0.5rem;
+  padding: 1rem 2.5rem;
+  font-size: 1.1rem !important;
+}
+
+.nav-links.mobile-open .lang-toggle {
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem;
+}
+
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: 2rem;
+}
+
+.hero-video-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  /* Rich mining-themed gradient fallback — always visible */
+  background:
+    radial-gradient(ellipse 120% 80% at 30% 70%, rgba(139,105,20,0.25) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 60% at 70% 30%, rgba(184,115,51,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 100% at 50% 50%, rgba(74,46,31,0.8) 0%, rgba(26,26,26,1) 70%),
+    linear-gradient(160deg, #2C1810 0%, #1A1A1A 40%, #0A0A0A 100%);
+}
+
+/* Inline <img> poster — loads when relative paths work */
+.hero-poster-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.45) saturate(0.7);
+  z-index: 0;
+}
+
+.hero-video-bg video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.45) saturate(0.7);
+  z-index: 1;
+}
+
+.hero-video-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 50%, rgba(26,26,26,0.15) 0%, rgba(26,26,26,0.5) 100%),
+    linear-gradient(180deg, rgba(26,26,26,0.5) 0%, transparent 25%, transparent 75%, rgba(26,26,26,0.85) 100%);
+  z-index: 2;
+}
+
+.hero-video-bg .video-grain {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+  background-size: 128px 128px;
+  pointer-events: none;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.hero-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 80%, rgba(200,150,62,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(10,110,92,0.04) 0%, transparent 60%);
+}
+
+.hero-bg .geo-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.025;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(200,150,62,0.3) 60px, rgba(200,150,62,0.3) 61px),
+    repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(200,150,62,0.3) 60px, rgba(200,150,62,0.3) 61px);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 3;
+  max-width: 900px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(200,150,62,0.1);
+  border: 1px solid rgba(200,150,62,0.25);
+  padding: 0.5rem 1.2rem;
+  border-radius: 100px;
+  margin-bottom: 2rem;
+  animation: fadeInUp 1s ease 0.3s both;
+}
+
+.hero-badge .dot {
+  width: 8px;
+  height: 8px;
+  background: var(--teal-light);
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+
+.hero-badge span {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(3rem, 7vw, 5.5rem);
+  line-height: 1.05;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5), 0 0 60px rgba(0,0,0,0.3);
+  animation: fadeInUp 1s ease 0.5s both;
+}
+
+.hero h1 .gold { color: var(--gold); }
+.hero h1 .white { color: var(--ivory); }
+
+.hero-tagline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  color: var(--gold-light);
+  margin-bottom: 1rem;
+  opacity: 0.9;
+  animation: fadeInUp 1s ease 0.7s both;
+}
+
+.hero-sub {
+  font-size: 1rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
+  animation: fadeInUp 1s ease 0.9s both;
+}
+
+.hero-meta {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  margin-bottom: 2.5rem;
+  animation: fadeInUp 1s ease 1.1s both;
+}
+
+.hero-meta-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-meta-item .label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.3rem;
+}
+
+.hero-meta-item .value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--ivory);
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  animation: fadeInUp 1s ease 1.3s both;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--earth);
+  padding: 0.9rem 2.2rem;
+  border: none;
+  border-radius: 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary:hover {
+  background: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(200,150,62,0.25);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--ivory);
+  padding: 0.9rem 2.2rem;
+  border: 1px solid rgba(250,246,240,0.25);
+  border-radius: 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 500;
+  font-size: 0.9rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+.btn-secondary:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+/* ===== SECTION COMMON ===== */
+section { padding: 6rem 3rem; }
+
+.section-label {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.section-label::before {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 3rem);
+  color: var(--ivory);
+  margin-bottom: 1.5rem;
+  line-height: 1.15;
+}
+
+.section-desc {
+  font-size: 1rem;
+  color: var(--text-muted);
+  max-width: 650px;
+  line-height: 1.7;
+}
+
+/* ===== ABOUT / MISSION ===== */
+.about {
+  background: var(--charcoal);
+  position: relative;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.about-visual {
+  position: relative;
+  height: 500px;
+}
+
+.about-card {
+  position: absolute;
+  background: linear-gradient(135deg, var(--earth-mid), var(--slate));
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+}
+
+.about-card.card-1 {
+  top: 0;
+  left: 0;
+  width: 280px;
+}
+
+.about-card.card-2 {
+  top: 120px;
+  right: 0;
+  width: 260px;
+}
+
+.about-card.card-3 {
+  bottom: 0;
+  left: 40px;
+  width: 300px;
+}
+
+.about-card .card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: rgba(200,150,62,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+}
+
+.about-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.about-card p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ===== STATS STRIP ===== */
+.stats-strip {
+  background: linear-gradient(135deg, var(--earth), var(--earth-mid));
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 3rem;
+}
+
+.stats-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+  text-align: center;
+}
+
+.stat-item .stat-num {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 2.5rem;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.stat-item .stat-label {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+
+/* ===== PROGRAMME ===== */
+.programme {
+  background: var(--charcoal);
+}
+
+.programme-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.timeline {
+  position: relative;
+  margin-top: 3rem;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, var(--gold), var(--teal), var(--gold-dark));
+}
+
+.timeline-item {
+  display: flex;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.timeline-dot {
+  width: 50px;
+  min-width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--slate);
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--gold);
+  z-index: 1;
+}
+
+.timeline-content {
+  background: linear-gradient(135deg, rgba(74,46,31,0.4), rgba(45,45,45,0.4));
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 1.8rem;
+  flex: 1;
+  transition: all 0.3s;
+}
+
+.timeline-content:hover {
+  border-color: var(--gold);
+  transform: translateX(4px);
+}
+
+.timeline-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--ivory);
+  margin-bottom: 0.5rem;
+}
+
+.timeline-content p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.timeline-content .speaker-tag {
+  display: inline-block;
+  margin-top: 0.8rem;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--teal-light);
+  background: rgba(10,110,92,0.1);
+  padding: 0.3rem 0.8rem;
+  border-radius: 100px;
+}
+
+/* ===== PLAYBOOK / CTA ===== */
+.playbook-section {
+  background: linear-gradient(160deg, var(--earth), var(--charcoal));
+  position: relative;
+  overflow: hidden;
+}
+
+.playbook-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,150,62,0.05) 0%, transparent 70%);
+}
+
+.playbook-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.playbook-preview {
+  background: linear-gradient(145deg, var(--slate), var(--earth-mid));
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 2.5rem;
+  position: relative;
+}
+
+.playbook-preview .badge {
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background: var(--gold);
+  color: var(--earth);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+}
+
+.playbook-preview h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+
+.playbook-features {
+  list-style: none;
+  margin-bottom: 1.5rem;
+}
+
+.playbook-features li {
+  font-size: 0.88rem;
+  color: var(--ivory);
+  padding: 0.6rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.playbook-features li::before {
+  content: '◆';
+  color: var(--gold);
+  font-size: 0.5rem;
+}
+
+/* ===== LEAD FORM ===== */
+.form-container {
+  background: linear-gradient(145deg, rgba(74,46,31,0.5), rgba(45,45,45,0.5));
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 2.5rem;
+}
+
+.form-container h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: var(--ivory);
+  margin-bottom: 0.5rem;
+}
+
+.form-container .form-sub {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--gold-light);
+  margin-bottom: 0.4rem;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background: rgba(26,26,26,0.6);
+  border: 1px solid rgba(200,150,62,0.2);
+  border-radius: 6px;
+  color: var(--ivory);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  transition: border-color 0.3s;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--gold);
+}
+
+.form-group input::placeholder {
+  color: var(--text-muted);
+}
+
+.form-group select option {
+  background: var(--charcoal);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.btn-form {
+  width: 100%;
+  margin-top: 0.5rem;
+  background: var(--gold);
+  color: var(--earth);
+  padding: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 0.04em;
+}
+
+.btn-form:hover {
+  background: var(--gold-light);
+  transform: translateY(-1px);
+}
+
+.form-note {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 0.8rem;
+  text-align: center;
+}
+
+/* ===== ORGANIZERS ===== */
+.organizers {
+  background: var(--charcoal);
+}
+
+.org-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 3rem auto 0;
+}
+
+.org-card {
+  background: linear-gradient(145deg, var(--earth-mid), var(--slate));
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.org-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+}
+
+.org-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(200,150,62,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: var(--gold);
+}
+
+.org-card h4 {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--ivory);
+  margin-bottom: 0.3rem;
+}
+
+.org-card .org-role {
+  font-size: 0.75rem;
+  color: var(--gold-light);
+  margin-bottom: 0.5rem;
+}
+
+.org-card .org-entity {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* ===== SPONSORS CTA ===== */
+.sponsors-cta {
+  background: linear-gradient(160deg, rgba(10,110,92,0.15), var(--charcoal));
+  border-top: 1px solid rgba(10,110,92,0.2);
+  text-align: center;
+}
+
+.sponsors-cta .section-title { max-width: 700px; margin: 0 auto 1rem; }
+
+.sponsor-tiers {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.tier-card {
+  background: linear-gradient(145deg, var(--earth-mid), var(--slate));
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 2rem 2.5rem;
+  min-width: 200px;
+  transition: all 0.3s;
+}
+
+.tier-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+}
+
+.tier-card .tier-name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+
+.tier-card .tier-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  background: var(--earth);
+  padding: 4rem 3rem 2rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-brand .brand {
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.footer-brand .tagline {
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  max-width: 300px;
+}
+
+.footer-social {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.footer-social a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(200,150,62,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-light);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: all 0.3s;
+}
+
+.footer-social a:hover {
+  background: var(--gold);
+  color: var(--earth);
+  border-color: var(--gold);
+}
+
+.footer-col h5 {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+
+.footer-col a {
+  display: block;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  padding: 0.3rem 0;
+  transition: color 0.3s;
+}
+
+.footer-col a:hover { color: var(--ivory); }
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(200,150,62,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-bottom p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.footer-powered {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.footer-powered span { color: var(--gold); }
+
+/* ===== HERO AMBIENT LIGHT ===== */
+@keyframes heroLightSweep {
+  0%   { opacity: 0; transform: translateX(-100%) skewX(-15deg); }
+  40%  { opacity: 0.07; }
+  100% { opacity: 0; transform: translateX(200%) skewX(-15deg); }
+}
+
+.hero-video-bg .hero-light {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(200,150,62,0.12), transparent);
+  z-index: 0;
+  animation: heroLightSweep 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ===== SCROLL ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== MOBILE & TABLET ===== */
+@media (max-width: 1024px) {
+  /* NAV — hamburger menu */
+  .nav { padding: 0.75rem 1.2rem; }
+  .nav.scrolled { padding: 0.6rem 1.2rem; }
+  .nav-links { display: none; }
+  .nav-hamburger { display: block; }
+  .logo-mark { width: 36px; height: 36px; }
+  .logo-text .brand { font-size: 1.15rem; }
+  .logo-text .sub { font-size: 0.5rem; letter-spacing: 0.15em; }
+  .nav-logo { gap: 0.5rem; }
+
+  /* HERO — video & layout */
+  .hero { padding: 1.5rem; padding-top: 5.5rem; min-height: 100svh; }
+  .hero-content { padding-top: 0.5rem; }
+  .hero h1 { font-size: clamp(2.4rem, 10vw, 3.5rem); }
+  .hero-tagline { font-size: 0.95rem; }
+  .hero-sub { font-size: 0.88rem; }
+  .hero-badge { padding: 0.4rem 0.9rem; margin-bottom: 1.5rem; }
+  .hero-badge span { font-size: 0.6rem; }
+  .hero-meta { flex-wrap: wrap; gap: 1.2rem; margin-bottom: 2rem; }
+  .hero-meta-item .label { font-size: 0.55rem; }
+  .hero-meta-item .value { font-size: 0.95rem; }
+  .hero-actions { flex-direction: column; align-items: center; gap: 0.8rem; }
+  .btn-primary, .btn-secondary { width: 100%; max-width: 320px; text-align: center; justify-content: center; }
+
+  /* SECTIONS */
+  section { padding: 4rem 1.5rem; }
+  .about-grid { grid-template-columns: 1fr; }
+  .about-visual { display: none; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .stat-item .stat-num { font-size: 1.8rem; }
+  .playbook-inner { grid-template-columns: 1fr; }
+  .org-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; }
+  .form-row { grid-template-columns: 1fr; }
+  .sponsor-tiers { gap: 1rem; }
+  .tier-card { min-width: unset; width: 100%; }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .hero h1 { font-size: 2.2rem; }
+  .hero-meta { gap: 1rem; }
+  .hero-meta-item .value { font-size: 0.85rem; }
+  .org-grid { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; }
+}
+
+/* ===== SEPARATOR ===== */
+.gold-line {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+  border-radius: 2px;
+  margin-bottom: 1.5rem;
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-overlay.active { display: flex; }
+
+.modal {
+  background: var(--slate);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 3rem;
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.modal p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.modal .check-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(10,110,92,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-size: 1.8rem;
+  color: var(--teal-light);
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="nav" id="mainNav">
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="24" cy="24" r="22" stroke="#C8963E" stroke-width="1.5" fill="none" opacity="0.3"/>
+        <path d="M24 6 L38 16 L38 32 L24 42 L10 32 L10 16 Z" stroke="#C8963E" stroke-width="1.5" fill="none"/>
+        <path d="M24 14 L32 20 L32 28 L24 34 L16 28 L16 20 Z" fill="#C8963E" opacity="0.15"/>
+        <circle cx="24" cy="24" r="4" fill="#C8963E"/>
+        <line x1="24" y1="6" x2="24" y2="14" stroke="#C8963E" stroke-width="1" opacity="0.5"/>
+        <line x1="38" y1="16" x2="32" y2="20" stroke="#C8963E" stroke-width="1" opacity="0.5"/>
+        <line x1="38" y1="32" x2="32" y2="28" stroke="#C8963E" stroke-width="1" opacity="0.5"/>
+        <line x1="24" y1="42" x2="24" y2="34" stroke="#C8963E" stroke-width="1" opacity="0.5"/>
+        <line x1="10" y1="32" x2="16" y2="28" stroke="#C8963E" stroke-width="1" opacity="0.5"/>
+        <line x1="10" y1="16" x2="16" y2="20" stroke="#C8963E" stroke-width="1" opacity="0.5"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="brand">BARAZA</span>
+      <span class="sub">Mining Forum</span>
+    </div>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about" onclick="closeNav()">À Propos</a></li>
+    <li><a href="#programme" onclick="closeNav()">Programme</a></li>
+    <li><a href="#playbook" onclick="closeNav()">Playbook</a></li>
+    <li><a href="#organizers" onclick="closeNav()">Organisateurs</a></li>
+    <li><a href="#sponsors" onclick="closeNav()">Sponsors</a></li>
+    <li><button class="lang-toggle" onclick="toggleLang()">EN / FR</button></li>
+    <li><a href="#playbook" class="nav-cta" onclick="closeNav()">S'INSCRIRE</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" onclick="toggleNav()" aria-label="Menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-video-bg">
+    <div class="hero-light"></div>
+    <img src="miningtunnelvideo_poster.jpg" alt="" class="hero-poster-img">
+    <video id="heroVideo" autoplay muted loop playsinline webkit-playsinline preload="auto" poster="miningtunnelvideo_poster.jpg">
+      <source src="miningtunnelvideo_web.mp4" type="video/mp4">
+    </video>
+    <div class="video-grain"></div>
+  </div>
+  <div class="hero-bg">
+    <div class="geo-pattern"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      <span>Yaoundé, Cameroun — 26 Mai 2026</span>
+    </div>
+    <h1>
+      <span class="gold">BARAZA</span><br>
+      <span class="white">Mining Forum</span>
+    </h1>
+    <p class="hero-tagline">Les Rencontres Africaines de l'Industrie Minière Responsable</p>
+    <p class="hero-sub">
+      Baraza réunit les voix qui façonnent l'avenir minier de l'Afrique Francophone. 
+      Un espace de dialogue structuré pour les décideurs, investisseurs et experts du secteur extractif.
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="label">Format</span>
+        <span class="value">Conférence</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Édition</span>
+        <span class="value">2ᵉ</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Panels</span>
+        <span class="value">3 Panels + Keynote</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Contenu</span>
+        <span class="value">Exclusif</span>
+      </div>
+    </div>
+    <div class="hero-actions">
+      <a href="#playbook" class="btn-primary">Accéder au Playbook ↗</a>
+      <a href="#programme" class="btn-secondary">Découvrir le Programme</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT / MISSION -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-text">
+      <div class="section-label reveal">Mission</div>
+      <h2 class="section-title reveal">Un dialogue structuré pour un avenir minier responsable</h2>
+      <div class="gold-line reveal"></div>
+      <p class="section-desc reveal" style="margin-bottom: 1.5rem;">
+        Le Cameroun dispose d'un potentiel minier parmi les plus significatifs d'Afrique centrale — fer, bauxite, or, cobalt, nickel, terres rares — mais son secteur ne contribue qu'à moins de 0,2% du budget national.
+      </p>
+      <p class="section-desc reveal">
+        Baraza Mining Forum s'inscrit comme un espace de réflexion de fond, ancré dans la Vision Minière Africaine (VMA) et les standards ITIE, pour structurer une compréhension commune des fondamentaux du secteur et identifier les leviers concrets de création de valeur locale.
+      </p>
+    </div>
+    <div class="about-visual">
+      <div class="about-card card-1 reveal">
+        <div class="card-icon">⚖️</div>
+        <h4>Gouvernance & Transparence</h4>
+        <p>Alignement avec la VMA, standards ITIE, conformité ESG et responsabilité des opérateurs</p>
+      </div>
+      <div class="about-card card-2 reveal">
+        <div class="card-icon">⛏️</div>
+        <h4>Industrialisation</h4>
+        <p>De l'exploration à la production — conditions de viabilité et transformation locale</p>
+      </div>
+      <div class="about-card card-3 reveal">
+        <div class="card-icon">📊</div>
+        <h4>Intelligence Stratégique</h4>
+        <p>Données, analyses et insights exclusifs via le Cameroon Mining Playbook 2026</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stats-inner">
+    <div class="stat-item reveal">
+      <div class="stat-num">26.4%</div>
+      <div class="stat-label">Score CAGM du Cameroun<br>(Alignement VMA)</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">&lt;0.2%</div>
+      <div class="stat-label">Contribution minière<br>au budget national</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">122</div>
+      <div class="stat-label">Permis de recherche<br>actifs</div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-num">$5.5B+</div>
+      <div class="stat-label">Pipeline projets<br>en développement</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROGRAMME -->
+<section class="programme" id="programme">
+  <div class="programme-inner">
+    <div class="section-label reveal">Programme — 26 Mai 2026</div>
+    <h2 class="section-title reveal">Architecture de la conférence</h2>
+    <div class="gold-line reveal"></div>
+    <p class="section-desc reveal">Une journée de keynote, panels thématiques et networking qualifié, au plus près des décideurs du secteur minier camerounais et africain.</p>
+
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">08h</div>
+        <div class="timeline-content">
+          <h4>Accueil & Ouverture Institutionnelle</h4>
+          <p>Mot de bienvenue des organisateurs. Présentation des objectifs et du positionnement de l'édition 2026.</p>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">09h</div>
+        <div class="timeline-content">
+          <h4>Keynote d'ouverture</h4>
+          <p>État des lieux de l'industrie minière camerounaise : exploitations en cours, perspectives et priorités stratégiques.</p>
+          <span class="speaker-tag">Intervenant pressenti : MINMIDT / SONAMINES</span>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">10h</div>
+        <div class="timeline-content">
+          <h4>Panel 1 — Comprendre les fondamentaux</h4>
+          <p>Lecture transversale du secteur minier : dimensions juridiques, fiscales, financières, énergétiques et infrastructurelles d'un projet minier, de l'exploration à l'exploitation.</p>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">12h</div>
+        <div class="timeline-content">
+          <h4>Panel 2 — Gouvernance & exploitation responsable</h4>
+          <p>Analyse des exigences internationales (ESG, ITIE, VMA) et implications économiques, financières et réputationnelles pour les États et opérateurs.</p>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">14h</div>
+        <div class="timeline-content">
+          <h4>Panel 3 — Le chantier de l'industrialisation</h4>
+          <p>Retours d'expérience d'industriels engagés dans des projets concrets : énergie, infrastructures, financement, compétences et conditions de viabilité économique.</p>
+          <span class="speaker-tag">Minim-Martap • Colomine • Ngovayang • SONAMINES</span>
+        </div>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot">16h</div>
+        <div class="timeline-content">
+          <h4>Networking structuré & Clôture</h4>
+          <p>Sessions de networking qualifié, échanges B2B et synthèse des recommandations clés de la conférence.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLAYBOOK & LEAD CAPTURE -->
+<section class="playbook-section" id="playbook">
+  <div class="playbook-inner">
+    <div>
+      <div class="section-label reveal">Contenu Exclusif</div>
+      <h2 class="section-title reveal">Cameroon Mining<br>Playbook 2026</h2>
+      <div class="gold-line reveal"></div>
+      <div class="playbook-preview reveal">
+        <div class="badge">EXCLUSIF</div>
+        <h3>Le guide stratégique de référence</h3>
+        <ul class="playbook-features">
+          <li>Dashboard interactif — données de production, flux commerciaux, acteurs clés</li>
+          <li>Pipeline projets — Minim-Martap, Colomine, Ngovayang, Mbalam-Nabeba</li>
+          <li>Analyse du cadre juridique — Code Minier 2023 & décrets d'application</li>
+          <li>Régime fiscal & partage de production — guide investisseur</li>
+          <li>Cartographie EMAPE — formalisation et chaînes d'approvisionnement</li>
+          <li>Score CAGM & alignement Vision Minière Africaine</li>
+          <li>Architecture institutionnelle — SONAMINES, MINMIDT, cadastre minier</li>
+        </ul>
+        <p style="font-size:0.75rem; color: var(--text-muted); font-style: italic;">
+          Produit par StratMined Advisory pour le Baraza Mining Forum
+        </p>
+      </div>
+    </div>
+    <div>
+      <div class="form-container reveal" id="leadForm">
+        <h3>Débloquez l'accès</h3>
+        <p class="form-sub">Remplissez le formulaire pour accéder au Dashboard interactif et télécharger le Playbook exclusif.</p>
+        <form onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Prénom *</label>
+              <input type="text" placeholder="Jean" required>
+            </div>
+            <div class="form-group">
+              <label>Nom *</label>
+              <input type="text" placeholder="Kamga" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email professionnel *</label>
+            <input type="email" placeholder="jean.kamga@company.com" required>
+          </div>
+          <div class="form-group">
+            <label>Organisation *</label>
+            <input type="text" placeholder="Votre entreprise ou institution" required>
+          </div>
+          <div class="form-group">
+            <label>Fonction</label>
+            <input type="text" placeholder="Directeur, Analyste, Consultant...">
+          </div>
+          <div class="form-group">
+            <label>Profil *</label>
+            <select required>
+              <option value="">Sélectionnez votre profil</option>
+              <option>Investisseur / Fonds d'investissement</option>
+              <option>Opérateur minier / Industriel</option>
+              <option>Autorité publique / Régulateur</option>
+              <option>Cabinet de conseil / Avocat</option>
+              <option>Institution financière / Banque</option>
+              <option>Société civile / ONG</option>
+              <option>Média / Presse économique</option>
+              <option>Universitaire / Recherche</option>
+              <option>Autre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Pays</label>
+            <input type="text" placeholder="Cameroun, France, RDC...">
+          </div>
+          <button type="submit" class="btn-form">Accéder au Dashboard & Playbook →</button>
+        </form>
+        <p class="form-note">🔒 Vos données sont traitées de manière confidentielle et ne seront jamais partagées avec des tiers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORGANIZERS -->
+<section class="organizers" id="organizers">
+  <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+    <div class="section-label reveal" style="justify-content: center;">
+      <span style="display:none;"></span>Consortium Organisateur
+    </div>
+    <h2 class="section-title reveal">Un consortium d'expertises complémentaires</h2>
+    <div class="gold-line reveal" style="margin: 0 auto 1.5rem;"></div>
+  </div>
+  <div class="org-grid">
+    <div class="org-card reveal">
+      <div class="org-avatar">LD</div>
+      <h4>Lucie Dzongang</h4>
+      <div class="org-role">Avocate — Barreaux Cameroun, Paris, New York</div>
+      <div class="org-entity">Droit minier & gouvernance</div>
+    </div>
+    <div class="org-card reveal">
+      <div class="org-avatar">HM</div>
+      <h4>Héra Mpondo</h4>
+      <div class="org-role">Fondateur & Directeur</div>
+      <div class="org-entity">StratMined Advisory</div>
+    </div>
+    <div class="org-card reveal">
+      <div class="org-avatar">AN</div>
+      <h4>Dr. Armand Ngansop</h4>
+      <div class="org-role">Directeur — Industrialisation</div>
+      <div class="org-entity">CTID Consulting</div>
+    </div>
+    <div class="org-card reveal">
+      <div class="org-avatar">LJ</div>
+      <h4>Landry Djimpé</h4>
+      <div class="org-role">Intelligence économique</div>
+      <div class="org-entity">Innogence Consulting</div>
+    </div>
+  </div>
+</section>
+
+<!-- SPONSORS CTA -->
+<section class="sponsors-cta" id="sponsors">
+  <div class="section-label reveal" style="justify-content: center;">Partenariats</div>
+  <h2 class="section-title reveal" style="text-align: center;">Devenez partenaire du Baraza Mining Forum</h2>
+  <p class="section-desc reveal" style="text-align: center; margin: 0 auto 1rem;">
+    Associez votre marque à la plateforme de référence sur l'industrie minière responsable en Afrique Francophone.
+  </p>
+  <div class="sponsor-tiers reveal">
+    <div class="tier-card">
+      <div class="tier-name">Platine</div>
+      <div class="tier-desc">Visibilité maximale • Keynote • Field Trip VIP</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-name">Or</div>
+      <div class="tier-desc">Panel branding • Stand exclusif • Networking</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-name">Argent</div>
+      <div class="tier-desc">Logo & mention • Accès participants • Rapport</div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-name">Partenaire Media</div>
+      <div class="tier-desc">Couverture presse • Interviews • Co-branding</div>
+    </div>
+  </div>
+  <div style="margin-top: 2.5rem;" class="reveal">
+    <a href="mailto:hera.mpondo@stratmined.com" class="btn-primary">Demander le dossier de sponsoring →</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="brand">BARAZA</div>
+      <p class="tagline">Les Rencontres Africaines de l'Industrie Minière Responsable</p>
+      <div class="footer-social">
+        <a href="#" title="LinkedIn">in</a>
+        <a href="#" title="Twitter / X">𝕏</a>
+        <a href="#" title="YouTube">▶</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5>Navigation</h5>
+      <a href="#about">À Propos</a>
+      <a href="#programme">Programme</a>
+      <a href="#playbook">Playbook</a>
+      <a href="#sponsors">Sponsors</a>
+    </div>
+    <div class="footer-col">
+      <h5>Ressources</h5>
+      <a href="#">Code Minier 2023</a>
+      <a href="#">Rapports ITIE</a>
+      <a href="#">Vision Minière Africaine</a>
+      <a href="#">Cadre AMGF</a>
+    </div>
+    <div class="footer-col">
+      <h5>Contact</h5>
+      <a href="mailto:hera.mpondo@stratmined.com">hera.mpondo@stratmined.com</a>
+      <a href="mailto:lucie.dzongang@gmail.com">lucie.dzongang@gmail.com</a>
+      <a href="mailto:landry.djimpe@innogenceconsulting.com">landry.djimpe@innogence.com</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Baraza Mining Forum. Tous droits réservés.</p>
+    <div class="footer-powered">Powered by <span>StratMined Advisory</span> × CTID × Innogence</div>
+  </div>
+</footer>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div class="check-icon">✓</div>
+    <h3>Accès Débloqué</h3>
+    <p>Merci pour votre inscription. Vous recevrez sous 24h un lien d'accès au Dashboard interactif et au Cameroon Mining Playbook 2026.</p>
+    <br>
+    <a href="#" class="btn-primary" onclick="closeModal()">Fermer</a>
+  </div>
+</div>
+
+<script>
+// Nav scroll effect
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 80);
+});
+
+// Scroll reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        entry.target.classList.add('visible');
+      }, i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+
+reveals.forEach(el => observer.observe(el));
+
+// Form submit
+function handleSubmit(e) {
+  e.preventDefault();
+  document.getElementById('successModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('successModal').classList.remove('active');
+}
+
+// Hamburger menu toggle
+function toggleNav() {
+  var links = document.getElementById('navLinks');
+  var burger = document.getElementById('navHamburger');
+  var isOpen = links.classList.contains('mobile-open');
+  if (isOpen) {
+    links.classList.remove('mobile-open');
+    burger.classList.remove('active');
+    document.body.style.overflow = '';
+  } else {
+    links.classList.add('mobile-open');
+    burger.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeNav() {
+  var links = document.getElementById('navLinks');
+  var burger = document.getElementById('navHamburger');
+  if (links) links.classList.remove('mobile-open');
+  if (burger) burger.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+// Language toggle placeholder
+function toggleLang() {
+  alert('Bilingual version (EN/FR) — full implementation in production build.');
+}
+
+// Smooth scroll for anchor links — close mobile nav first
+document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+  anchor.addEventListener('click', function(e) {
+    var href = this.getAttribute('href');
+    var target = document.querySelector(href);
+    if (target) {
+      e.preventDefault();
+      closeNav();
+      setTimeout(function() {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+  });
+});
+
+// Force video play on mobile (iOS/Android autoplay workaround)
+(function() {
+  var vid = document.getElementById('heroVideo');
+  if (!vid) return;
+
+  // Ensure muted attribute is set (required for mobile autoplay)
+  vid.muted = true;
+  vid.setAttribute('muted', '');
+  vid.setAttribute('playsinline', '');
+  vid.setAttribute('webkit-playsinline', '');
+
+  function tryPlay() {
+    vid.muted = true;
+    var p = vid.play();
+    if (p !== undefined) {
+      p.then(function() {
+        // Video playing — make sure it's visible
+        vid.style.opacity = '1';
+      }).catch(function() {
+        // Autoplay blocked — retry on ANY user interaction
+        ['touchstart', 'touchend', 'click', 'scroll'].forEach(function(evt) {
+          document.addEventListener(evt, function handler() {
+            vid.muted = true;
+            vid.play().catch(function(){});
+            document.removeEventListener(evt, handler);
+          }, { once: true, passive: true });
+        });
+      });
+    }
+  }
+
+  // Try immediately, on loadeddata, on canplay, and after a delay
+  tryPlay();
+  vid.addEventListener('loadeddata', tryPlay);
+  vid.addEventListener('canplay', tryPlay);
+  setTimeout(tryPlay, 1000);
+  setTimeout(tryPlay, 3000);
+})();
+</script>
+</body>
+</html>
