@@ -914,8 +914,8 @@ section { padding: 6rem 3rem; }
 }
 
 .org-avatar {
-  width: 64px;
-  height: 64px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   background: rgba(200,150,62,0.12);
   display: flex;
@@ -926,6 +926,22 @@ section { padding: 6rem 3rem; }
   font-weight: 800;
   font-size: 1.2rem;
   color: var(--gold);
+}
+
+.org-avatar-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1rem;
+  display: block;
+  border: 3px solid transparent;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.org-card:hover .org-avatar-photo {
+  border-color: var(--gold);
+  transform: scale(1.05);
 }
 
 .org-card h4 {
@@ -1257,6 +1273,184 @@ section { padding: 6rem 3rem; }
   font-size: 1.8rem;
   color: var(--teal-light);
 }
+
+/* ===== UNLOCK CODE DISPLAY ===== */
+.unlock-code-display {
+  background: rgba(26,26,26,0.8);
+  border: 2px solid var(--gold);
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.unlock-code-display .code {
+  font-family: 'Space Mono', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5rem;
+  user-select: all;
+}
+
+.unlock-code-display .code-note {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.btn-copy {
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.btn-copy:hover {
+  background: var(--gold);
+  color: var(--earth);
+}
+
+.btn-copy.copied {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: var(--white);
+}
+
+.btn-dashboard-link {
+  display: inline-block;
+  margin-top: 0.8rem;
+  background: var(--gold);
+  color: var(--earth);
+  padding: 0.7rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.btn-dashboard-link:hover {
+  background: var(--gold-light);
+  transform: translateY(-1px);
+}
+
+/* ===== DASHBOARD TEASER ===== */
+.dashboard-teaser {
+  margin-top: 2rem;
+  background: linear-gradient(145deg, rgba(26,26,26,0.6), rgba(45,45,45,0.6));
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.teaser-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.teaser-stat {
+  text-align: center;
+}
+
+.teaser-stat .t-value {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.6rem;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.teaser-stat .t-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+}
+
+.teaser-locked {
+  position: relative;
+  background: rgba(26,26,26,0.4);
+  border-radius: 8px;
+  padding: 1.5rem;
+  overflow: hidden;
+}
+
+.teaser-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 60px;
+  filter: blur(3px);
+  opacity: 0.4;
+}
+
+.teaser-bars .bar {
+  flex: 1;
+  background: var(--gold);
+  border-radius: 3px 3px 0 0;
+}
+
+.teaser-lock-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(26,26,26,0.5);
+  z-index: 2;
+}
+
+.teaser-lock-overlay .lock-icon {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.teaser-lock-overlay .lock-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  text-align: center;
+  max-width: 250px;
+}
+
+/* ===== EVENT REGISTRATION MODAL ===== */
+.event-modal .modal {
+  max-width: 600px;
+  text-align: left;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.event-modal .modal h3 {
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+
+.event-modal .modal .form-sub {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
 </style>
 </head>
 <body>
@@ -1290,7 +1484,7 @@ section { padding: 6rem 3rem; }
     <li><a href="#organizers" onclick="closeNav()">Organisateurs</a></li>
     <li><a href="#sponsors" onclick="closeNav()">Sponsors</a></li>
     <li><button class="lang-toggle" onclick="toggleLang()">EN / FR</button></li>
-    <li><a href="#playbook" class="nav-cta" onclick="closeNav()">S'INSCRIRE</a></li>
+    <li><a href="#" class="nav-cta" onclick="closeNav(); openEventModal(); return false;">S'INSCRIRE</a></li>
   </ul>
   <button class="nav-hamburger" id="navHamburger" onclick="toggleNav()" aria-label="Menu">
     <span></span>
@@ -1487,37 +1681,72 @@ section { padding: 6rem 3rem; }
           Produit par StratMined Advisory pour le Baraza Mining Forum
         </p>
       </div>
+      <!-- Dashboard Teaser -->
+      <div class="dashboard-teaser reveal">
+        <div class="teaser-stats">
+          <div class="teaser-stat">
+            <div class="t-value">0.63%</div>
+            <div class="t-label">Mining GDP Contribution</div>
+          </div>
+          <div class="teaser-stat">
+            <div class="t-value">CFA 1,416Bn</div>
+            <div class="t-label">Extractive Revenues (2022)</div>
+          </div>
+          <div class="teaser-stat">
+            <div class="t-value">122</div>
+            <div class="t-label">Permis de recherche actifs</div>
+          </div>
+        </div>
+        <div class="teaser-locked">
+          <div class="teaser-bars">
+            <div class="bar" style="height:35%"></div>
+            <div class="bar" style="height:55%"></div>
+            <div class="bar" style="height:80%"></div>
+            <div class="bar" style="height:45%"></div>
+            <div class="bar" style="height:65%"></div>
+            <div class="bar" style="height:90%"></div>
+            <div class="bar" style="height:50%"></div>
+            <div class="bar" style="height:70%"></div>
+            <div class="bar" style="height:40%"></div>
+            <div class="bar" style="height:60%"></div>
+          </div>
+          <div class="teaser-lock-overlay">
+            <div class="lock-icon">🔒</div>
+            <div class="lock-text">11 sections interactives — Graphiques, tableaux, analyses stratégiques</div>
+          </div>
+        </div>
+      </div>
     </div>
     <div>
       <div class="form-container reveal" id="leadForm">
         <h3>Débloquez l'accès</h3>
         <p class="form-sub">Remplissez le formulaire pour accéder au Dashboard interactif et télécharger le Playbook exclusif.</p>
-        <form onsubmit="handleSubmit(event)">
+        <form id="dashboardAccessForm" onsubmit="handleDashboardSubmit(event)">
           <div class="form-row">
             <div class="form-group">
               <label>Prénom *</label>
-              <input type="text" placeholder="Jean" required>
+              <input type="text" name="prenom" placeholder="Jean" required>
             </div>
             <div class="form-group">
               <label>Nom *</label>
-              <input type="text" placeholder="Kamga" required>
+              <input type="text" name="nom" placeholder="Kamga" required>
             </div>
           </div>
           <div class="form-group">
             <label>Email professionnel *</label>
-            <input type="email" placeholder="jean.kamga@company.com" required>
+            <input type="email" name="email" placeholder="jean.kamga@company.com" required>
           </div>
           <div class="form-group">
             <label>Organisation *</label>
-            <input type="text" placeholder="Votre entreprise ou institution" required>
+            <input type="text" name="organisation" placeholder="Votre entreprise ou institution" required>
           </div>
           <div class="form-group">
             <label>Fonction</label>
-            <input type="text" placeholder="Directeur, Analyste, Consultant...">
+            <input type="text" name="fonction" placeholder="Directeur, Analyste, Consultant...">
           </div>
           <div class="form-group">
             <label>Profil *</label>
-            <select required>
+            <select name="profil" required>
               <option value="">Sélectionnez votre profil</option>
               <option>Investisseur / Fonds d'investissement</option>
               <option>Opérateur minier / Industriel</option>
@@ -1532,7 +1761,7 @@ section { padding: 6rem 3rem; }
           </div>
           <div class="form-group">
             <label>Pays</label>
-            <input type="text" placeholder="Cameroun, France, RDC...">
+            <input type="text" name="pays" placeholder="Cameroun, France, RDC...">
           </div>
           <button type="submit" class="btn-form">Accéder au Dashboard & Playbook →</button>
         </form>
@@ -1553,25 +1782,25 @@ section { padding: 6rem 3rem; }
   </div>
   <div class="org-grid">
     <div class="org-card reveal">
-      <div class="org-avatar">LD</div>
+      <img src="photos/lucie-dzongang.jpg" alt="Lucie Dzongang" class="org-avatar-photo">
       <h4>Lucie Dzongang</h4>
       <div class="org-role">Avocate — Barreaux Cameroun, Paris, New York</div>
       <div class="org-entity">Droit minier & gouvernance</div>
     </div>
     <div class="org-card reveal">
-      <div class="org-avatar">HM</div>
+      <img src="photos/hera-mpondo.jpg" alt="Héra Mpondo" class="org-avatar-photo">
       <h4>Héra Mpondo</h4>
       <div class="org-role">Fondateur & Directeur</div>
       <div class="org-entity">StratMined Advisory</div>
     </div>
     <div class="org-card reveal">
-      <div class="org-avatar">AN</div>
+      <img src="photos/armand-ngansop.jpg" alt="Dr. Armand Ngansop" class="org-avatar-photo">
       <h4>Dr. Armand Ngansop</h4>
       <div class="org-role">Directeur — Industrialisation</div>
       <div class="org-entity">CTID Consulting</div>
     </div>
     <div class="org-card reveal">
-      <div class="org-avatar">LJ</div>
+      <img src="photos/landry-djimpe.jpg" alt="Landry Djimpé" class="org-avatar-photo">
       <h4>Landry Djimpé</h4>
       <div class="org-role">Intelligence économique</div>
       <div class="org-entity">Innogence Consulting</div>
@@ -1648,26 +1877,92 @@ section { padding: 6rem 3rem; }
   </div>
 </footer>
 
-<!-- SUCCESS MODAL -->
+<!-- SUCCESS MODAL — Unlock Code -->
 <div class="modal-overlay" id="successModal">
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">×</button>
     <div class="check-icon">✓</div>
     <h3>Accès Débloqué</h3>
-    <p>Merci pour votre inscription. Vous recevrez sous 24h un lien d'accès au Dashboard interactif et au Cameroon Mining Playbook 2026.</p>
-    <br>
-    <a href="#" class="btn-primary" onclick="closeModal()">Fermer</a>
+    <p>Merci pour votre inscription. Voici votre code d'accès au Dashboard interactif :</p>
+    <div class="unlock-code-display">
+      <div class="code" id="unlockCodeDisplay">---</div>
+      <button class="btn-copy" id="btnCopyCode" onclick="copyUnlockCode()">📋 Copier le code</button>
+      <div class="code-note">Conservez ce code — il vous sera demandé pour accéder au Dashboard</div>
+    </div>
+    <a href="dashboard.html" class="btn-dashboard-link" target="_blank">Accéder au Dashboard →</a>
+    <br><br>
+    <a href="#" style="font-size:0.8rem; color: var(--text-muted);" onclick="closeModal(); return false;">Fermer</a>
+  </div>
+</div>
+
+<!-- EVENT REGISTRATION MODAL -->
+<div class="modal-overlay event-modal" id="eventModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeEventModal()">×</button>
+    <h3>Inscription — Baraza Mining Forum 2026</h3>
+    <p class="form-sub">Yaoundé, Cameroun — 26 Mai 2026</p>
+    <form id="eventRegistrationForm" onsubmit="handleEventSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Prénom *</label>
+          <input type="text" name="prenom" placeholder="Jean" required>
+        </div>
+        <div class="form-group">
+          <label>Nom *</label>
+          <input type="text" name="nom" placeholder="Kamga" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email *</label>
+        <input type="email" name="email" placeholder="jean.kamga@company.com" required>
+      </div>
+      <div class="form-group">
+        <label>Organisation *</label>
+        <input type="text" name="organisation" placeholder="Votre entreprise ou institution" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Fonction</label>
+          <input type="text" name="fonction" placeholder="Directeur, Analyste...">
+        </div>
+        <div class="form-group">
+          <label>Téléphone</label>
+          <input type="tel" name="telephone" placeholder="+237 6XX XXX XXX">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Profil *</label>
+        <select name="profil" required>
+          <option value="">Sélectionnez votre profil</option>
+          <option>Investisseur / Fonds d'investissement</option>
+          <option>Opérateur minier / Industriel</option>
+          <option>Autorité publique / Régulateur</option>
+          <option>Cabinet de conseil / Avocat</option>
+          <option>Institution financière / Banque</option>
+          <option>Société civile / ONG</option>
+          <option>Média / Presse économique</option>
+          <option>Universitaire / Recherche</option>
+          <option>Autre</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Pays *</label>
+        <input type="text" name="pays" placeholder="Cameroun, France, RDC..." required>
+      </div>
+      <button type="submit" class="btn-form">S'inscrire & Réserver ma place →</button>
+    </form>
+    <p class="form-note">🔒 Inscription gratuite. Vous serez redirigé vers Eventbrite pour confirmer votre place.</p>
   </div>
 </div>
 
 <script>
-// Nav scroll effect
+// ===== NAV SCROLL EFFECT =====
 const nav = document.getElementById('mainNav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 80);
 });
 
-// Scroll reveal
+// ===== SCROLL REVEAL =====
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
@@ -1679,20 +1974,187 @@ const observer = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.15 });
-
 reveals.forEach(el => observer.observe(el));
 
-// Form submit
-function handleSubmit(e) {
+// ===== UNLOCK CODE GENERATION =====
+// Format: 999-XXXXXXX-777 (3 digits, 7 uppercase letters, 3 digits)
+function generateUnlockCode() {
+  var digits1 = String(Math.floor(100 + Math.random() * 900));
+  var letters = '';
+  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ'; // Excluded I and O to avoid confusion
+  for (var i = 0; i < 7; i++) {
+    letters += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  var digits2 = String(Math.floor(100 + Math.random() * 900));
+  return digits1 + '-' + letters + '-' + digits2;
+}
+
+// ===== GOOGLE SHEETS INTEGRATION =====
+/*
+ * ===========================================================================
+ * GOOGLE SHEETS SETUP INSTRUCTIONS
+ * ===========================================================================
+ *
+ * 1. Create a Google Spreadsheet with two sheets:
+ *    - Sheet 1: "Dashboard Access" (columns: Timestamp, Prénom, Nom, Email, Organisation, Fonction, Profil, Pays, Unlock Code)
+ *    - Sheet 2: "Event Registration" (columns: Timestamp, Prénom, Nom, Email, Organisation, Fonction, Téléphone, Profil, Pays)
+ *
+ * 2. Go to Extensions > Apps Script and paste this code:
+ *
+ *    function doPost(e) {
+ *      var lock = LockService.getScriptLock();
+ *      lock.tryLock(10000);
+ *
+ *      try {
+ *        var data = JSON.parse(e.postData.contents);
+ *        var sheetName = data.formType === 'event' ? 'Event Registration' : 'Dashboard Access';
+ *        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+ *
+ *        if (!sheet) {
+ *          return ContentService.createTextOutput(JSON.stringify({status: 'error', message: 'Sheet not found'}))
+ *            .setMimeType(ContentService.MimeType.JSON);
+ *        }
+ *
+ *        var row = [new Date().toISOString()];
+ *        var fields = data.formType === 'event'
+ *          ? ['prenom', 'nom', 'email', 'organisation', 'fonction', 'telephone', 'profil', 'pays']
+ *          : ['prenom', 'nom', 'email', 'organisation', 'fonction', 'profil', 'pays', 'unlockCode'];
+ *
+ *        fields.forEach(function(field) { row.push(data[field] || ''); });
+ *        sheet.appendRow(row);
+ *
+ *        return ContentService.createTextOutput(JSON.stringify({status: 'success'}))
+ *          .setMimeType(ContentService.MimeType.JSON);
+ *      } catch(err) {
+ *        return ContentService.createTextOutput(JSON.stringify({status: 'error', message: err.message}))
+ *          .setMimeType(ContentService.MimeType.JSON);
+ *      } finally {
+ *        lock.releaseLock();
+ *      }
+ *    }
+ *
+ * 3. Deploy as Web App:
+ *    - Execute as: Me
+ *    - Who has access: Anyone
+ *    - Copy the deployment URL
+ *
+ * 4. Replace the placeholder URL below with your deployment URL:
+ */
+var GOOGLE_SHEETS_ENDPOINT = ''; // Paste your Apps Script Web App URL here
+
+function submitToGoogleSheets(formData, formType) {
+  if (!GOOGLE_SHEETS_ENDPOINT) {
+    console.log('[Baraza] Google Sheets endpoint not configured. Form data:', formType, formData);
+    return;
+  }
+  var payload = Object.assign({}, formData, { formType: formType });
+  fetch(GOOGLE_SHEETS_ENDPOINT, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).then(function() {
+    console.log('[Baraza] Data sent to Google Sheets:', formType);
+  }).catch(function(err) {
+    console.warn('[Baraza] Google Sheets submission failed (silent):', err.message);
+  });
+}
+
+// ===== DASHBOARD ACCESS FORM SUBMIT =====
+function handleDashboardSubmit(e) {
   e.preventDefault();
+  var form = e.target;
+  var formData = {};
+  new FormData(form).forEach(function(value, key) { formData[key] = value; });
+
+  // Generate unlock code
+  var code = generateUnlockCode();
+  formData.unlockCode = code;
+
+  // Display the code in the modal
+  document.getElementById('unlockCodeDisplay').textContent = code;
+
+  // Submit to Google Sheets (silent — works when endpoint is configured)
+  submitToGoogleSheets(formData, 'dashboard');
+
+  // Show success modal
   document.getElementById('successModal').classList.add('active');
+}
+
+// ===== COPY UNLOCK CODE =====
+function copyUnlockCode() {
+  var code = document.getElementById('unlockCodeDisplay').textContent;
+  var btn = document.getElementById('btnCopyCode');
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(code).then(function() {
+      btn.classList.add('copied');
+      btn.innerHTML = '✓ Copié !';
+      setTimeout(function() {
+        btn.classList.remove('copied');
+        btn.innerHTML = '📋 Copier le code';
+      }, 2500);
+    });
+  } else {
+    // Fallback for older browsers
+    var ta = document.createElement('textarea');
+    ta.value = code;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.classList.add('copied');
+    btn.innerHTML = '✓ Copié !';
+    setTimeout(function() {
+      btn.classList.remove('copied');
+      btn.innerHTML = '📋 Copier le code';
+    }, 2500);
+  }
 }
 
 function closeModal() {
   document.getElementById('successModal').classList.remove('active');
 }
 
-// Hamburger menu toggle
+// ===== EVENT REGISTRATION MODAL =====
+function openEventModal() {
+  document.getElementById('eventModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeEventModal() {
+  document.getElementById('eventModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function handleEventSubmit(e) {
+  e.preventDefault();
+  var form = e.target;
+  var formData = {};
+  new FormData(form).forEach(function(value, key) { formData[key] = value; });
+
+  // Submit to Google Sheets
+  submitToGoogleSheets(formData, 'event');
+
+  // Close modal
+  closeEventModal();
+
+  // Redirect to Eventbrite (placeholder URL — replace when event page is created)
+  // TODO: Replace this placeholder with the actual Eventbrite event URL
+  var eventbriteURL = 'https://www.eventbrite.com/e/baraza-mining-forum-2026-placeholder';
+  window.open(eventbriteURL, '_blank');
+}
+
+// Close event modal on overlay click
+document.getElementById('eventModal').addEventListener('click', function(e) {
+  if (e.target === this) closeEventModal();
+});
+
+// Close success modal on overlay click
+document.getElementById('successModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ===== HAMBURGER MENU =====
 function toggleNav() {
   var links = document.getElementById('navLinks');
   var burger = document.getElementById('navHamburger');
@@ -1716,15 +2178,16 @@ function closeNav() {
   document.body.style.overflow = '';
 }
 
-// Language toggle placeholder
+// ===== LANGUAGE TOGGLE =====
 function toggleLang() {
   alert('Bilingual version (EN/FR) — full implementation in production build.');
 }
 
-// Smooth scroll for anchor links — close mobile nav first
+// ===== SMOOTH SCROLL =====
 document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   anchor.addEventListener('click', function(e) {
     var href = this.getAttribute('href');
+    if (href === '#') return; // Skip empty anchors
     var target = document.querySelector(href);
     if (target) {
       e.preventDefault();
@@ -1736,12 +2199,10 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
   });
 });
 
-// Force video play on mobile (iOS/Android autoplay workaround)
+// ===== FORCE VIDEO PLAY ON MOBILE =====
 (function() {
   var vid = document.getElementById('heroVideo');
   if (!vid) return;
-
-  // Ensure muted attribute is set (required for mobile autoplay)
   vid.muted = true;
   vid.setAttribute('muted', '');
   vid.setAttribute('playsinline', '');
@@ -1752,10 +2213,8 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
     var p = vid.play();
     if (p !== undefined) {
       p.then(function() {
-        // Video playing — make sure it's visible
         vid.style.opacity = '1';
       }).catch(function() {
-        // Autoplay blocked — retry on ANY user interaction
         ['touchstart', 'touchend', 'click', 'scroll'].forEach(function(evt) {
           document.addEventListener(evt, function handler() {
             vid.muted = true;
@@ -1767,13 +2226,44 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
     }
   }
 
-  // Try immediately, on loadeddata, on canplay, and after a delay
   tryPlay();
   vid.addEventListener('loadeddata', tryPlay);
   vid.addEventListener('canplay', tryPlay);
   setTimeout(tryPlay, 1000);
   setTimeout(tryPlay, 3000);
 })();
+
+/*
+ * ===========================================================================
+ * EMAIL INTEGRATION (FUTURE)
+ * ===========================================================================
+ *
+ * To send the unlock code by email, you can use one of these approaches:
+ *
+ * Option A: EmailJS (client-side)
+ *   1. Sign up at https://www.emailjs.com
+ *   2. Create a template with variables: {{to_email}}, {{to_name}}, {{unlock_code}}
+ *   3. Add this to handleDashboardSubmit after generating the code:
+ *
+ *   emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+ *     to_email: formData.email,
+ *     to_name: formData.prenom,
+ *     unlock_code: code
+ *   });
+ *
+ * Option B: Google Apps Script (server-side, add to the doPost function):
+ *
+ *   if (data.formType === 'dashboard' && data.email) {
+ *     MailApp.sendEmail({
+ *       to: data.email,
+ *       subject: 'Votre code d\'accès — Baraza Mining Forum Dashboard',
+ *       htmlBody: '<h2>Bienvenue ' + data.prenom + '</h2>' +
+ *         '<p>Votre code d\'accès au Dashboard interactif :</p>' +
+ *         '<h1 style="color:#C8963E;font-family:monospace">' + data.unlockCode + '</h1>' +
+ *         '<p><a href="https://stratmined.github.io/baraza-website/dashboard.html">Accéder au Dashboard</a></p>'
+ *     });
+ *   }
+ */
 </script>
 </body>
 </html>

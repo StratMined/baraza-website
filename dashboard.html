@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cameroon Mining Sector Dashboard | Baraza Mining Forum</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1B2A4A; --navy-mid: #243656; --navy-light: #2D4268;
+    --gold: #C5922E; --gold-dim: #A07B2E; --copper: #C8963E;
+    --teal: #0D7C71; --teal-light: #10A396;
+    --dark: #111827; --charcoal: #374151; --light: #F8FAFC; --white: #FFFFFF;
+    --cream: #F5F0E8; --accent: #D97706;
+    --muted: #6B7280; --red: #DC2626; --green: #16A34A; --slate: #475569;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', 'Segoe UI', system-ui, sans-serif; background: var(--light); color: var(--charcoal); }
+
+  /* ===== ACCESS GATE ===== */
+  .gate-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: linear-gradient(160deg, #1B2A4A 0%, #0A0A0A 50%, #2C1810 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease;
+  }
+
+  .gate-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .gate-box {
+    background: rgba(27, 42, 74, 0.6);
+    border: 1px solid rgba(197, 146, 46, 0.3);
+    border-radius: 16px;
+    padding: 3rem;
+    max-width: 480px;
+    width: 90%;
+    text-align: center;
+    backdrop-filter: blur(20px);
+  }
+
+  .gate-logo {
+    margin-bottom: 1.5rem;
+  }
+
+  .gate-logo .brand {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 800;
+    font-size: 2rem;
+    color: var(--copper);
+    letter-spacing: 0.05em;
+  }
+
+  .gate-logo .sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #94A3B8;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .gate-box h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.3rem;
+    color: #F8FAFC;
+    margin-bottom: 0.5rem;
+  }
+
+  .gate-box .gate-desc {
+    font-size: 0.85rem;
+    color: #94A3B8;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .gate-input-group {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .gate-input {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+    background: rgba(17, 24, 39, 0.8);
+    border: 2px solid rgba(197, 146, 46, 0.3);
+    border-radius: 8px;
+    color: var(--copper);
+    font-family: 'Space Mono', monospace;
+    font-size: 1.1rem;
+    letter-spacing: 0.12em;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .gate-input:focus {
+    border-color: var(--copper);
+    box-shadow: 0 0 20px rgba(197, 146, 46, 0.15);
+  }
+
+  .gate-input::placeholder {
+    color: #475569;
+    letter-spacing: 0.15em;
+    font-size: 0.9rem;
+  }
+
+  .gate-btn {
+    width: 100%;
+    padding: 0.9rem;
+    background: var(--copper);
+    color: #1B2A4A;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .gate-btn:hover {
+    background: #E8C777;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(197, 146, 46, 0.25);
+  }
+
+  .gate-error {
+    color: var(--red);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    display: none;
+  }
+
+  .gate-error.visible {
+    display: block;
+    animation: shake 0.4s ease;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  .gate-footer {
+    margin-top: 1.5rem;
+    font-size: 0.75rem;
+    color: #475569;
+  }
+
+  .gate-footer a {
+    color: var(--copper);
+    text-decoration: none;
+  }
+
+  .gate-footer a:hover {
+    text-decoration: underline;
+  }
+
+  /* ===== HEADER ===== */
+  .header { background: linear-gradient(135deg, var(--navy) 0%, #1e3555 50%, var(--navy) 100%); color: white; padding: 1.5rem 2rem; display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+  .header-logo { flex-shrink: 0; }
+  .header-logo svg { height: 54px; width: auto; }
+  .header-content { flex: 1; min-width: 300px; }
+  .header-content h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 1.65rem; font-weight: 700; letter-spacing: 0.01em; }
+  .header-content .sub { color: var(--gold); font-size: 1rem; font-weight: 500; margin-top: 0.15rem; }
+  .header-content .tag { color: #94A3B8; font-size: 0.78rem; margin-top: 0.3rem; }
+  .header-flag { display: flex; gap: 2px; align-items: center; margin-left: auto; }
+  .header-flag span { display: block; width: 12px; height: 32px; }
+  .header-back { margin-left: 1rem; }
+  .header-back a { color: var(--gold); text-decoration: none; font-size: 0.8rem; font-weight: 500; padding: 0.4rem 0.8rem; border: 1px solid rgba(197,146,46,0.4); border-radius: 4px; transition: all 0.2s; }
+  .header-back a:hover { background: var(--gold); color: var(--navy); }
+
+  /* ===== NAV ===== */
+  .nav { background: var(--dark); padding: 0.45rem 1rem; display: flex; flex-wrap: wrap; gap: 0.25rem; justify-content: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .nav button { background: transparent; color: #94A3B8; border: 1px solid #374151; padding: 0.35rem 0.7rem; border-radius: 4px; cursor: pointer; font-size: 0.72rem; font-family: 'DM Sans', sans-serif; font-weight: 500; transition: all 0.2s; }
+  .nav button:hover, .nav button.active { background: var(--gold); color: var(--dark); border-color: var(--gold); font-weight: 600; }
+
+  /* ===== DASHBOARD ===== */
+  .dashboard { max-width: 1440px; margin: 0 auto; padding: 1.5rem; }
+  .section { margin-bottom: 2rem; display: none; }
+  .section.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .section-title { font-family: 'Playfair Display', Georgia, serif; font-size: 1.4rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--gold); }
+  .section-subtitle { font-size: 0.85rem; color: var(--muted); margin-top: -0.6rem; margin-bottom: 1rem; }
+
+  /* ===== GRID ===== */
+  .grid { display: grid; gap: 1rem; }
+  .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+  .grid-5 { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
+
+  /* ===== CARDS ===== */
+  .card { background: white; border-radius: 8px; padding: 1.25rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #E5E7EB; transition: box-shadow 0.2s; }
+  .card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+  .stat-card { text-align: center; }
+  .stat-card .value { font-family: 'Playfair Display', Georgia, serif; font-size: 1.85rem; font-weight: 800; line-height: 1.2; }
+  .stat-card .label { font-size: 0.78rem; color: var(--muted); margin-top: 0.3rem; }
+  .stat-card .trend { font-size: 0.72rem; margin-top: 0.2rem; font-weight: 500; }
+  .trend-up { color: var(--green); } .trend-down { color: var(--red); } .trend-neutral { color: var(--accent); }
+
+  /* ===== TABLE ===== */
+  table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  th { background: var(--navy); color: white; padding: 0.55rem 0.6rem; text-align: left; font-weight: 600; font-size: 0.78rem; }
+  td { padding: 0.45rem 0.6rem; border-bottom: 1px solid #E5E7EB; }
+  tr:nth-child(even) { background: #F9FAFB; }
+  tr:hover { background: #FEF3C7; }
+  .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.68rem; font-weight: 600; white-space: nowrap; }
+  .badge-green { background: #DCFCE7; color: #166534; }
+  .badge-amber { background: #FEF3C7; color: #92400E; }
+  .badge-red { background: #FEE2E2; color: #991B1B; }
+  .badge-blue { background: #DBEAFE; color: #1E40AF; }
+  .badge-teal { background: #CCFBF1; color: #115E59; }
+
+  /* ===== CHARTS ===== */
+  .chart-container { position: relative; height: 300px; }
+  .chart-sm { height: 220px; }
+  h3 { font-family: 'Playfair Display', Georgia, serif; color: var(--navy); margin-bottom: 0.6rem; font-size: 1rem; }
+
+  /* ===== INSIGHT BOX ===== */
+  .insight-box { background: linear-gradient(135deg, #F0FDF4, #ECFDF5); border-left: 4px solid var(--teal); padding: 1rem 1.2rem; border-radius: 0 6px 6px 0; margin-top: 1rem; }
+  .insight-box h4 { color: var(--teal); margin-bottom: 0.3rem; font-size: 0.88rem; font-weight: 700; }
+  .insight-box p { font-size: 0.82rem; color: var(--charcoal); line-height: 1.5; }
+  .insight-gold { background: linear-gradient(135deg, #FFFBEB, #FEF3C7); border-left-color: var(--gold); }
+  .insight-gold h4 { color: var(--gold-dim); }
+  .insight-red { background: linear-gradient(135deg, #FEF2F2, #FEE2E2); border-left-color: var(--red); }
+  .insight-red h4 { color: var(--red); }
+
+  /* ===== FLOW CHAIN ===== */
+  .chain { display: flex; gap: 0.4rem; flex-wrap: wrap; align-items: stretch; margin: 0.8rem 0; }
+  .chain-step { flex: 1; min-width: 140px; background: white; border: 1px solid #E5E7EB; border-radius: 8px; padding: 0.8rem; text-align: center; position: relative; }
+  .chain-step .step-top { height: 4px; border-radius: 4px 4px 0 0; margin: -0.8rem -0.8rem 0.6rem -0.8rem; }
+  .chain-step strong { font-size: 0.85rem; color: var(--navy); display: block; }
+  .chain-step small { font-size: 0.72rem; color: var(--muted); }
+  .chain-arrow { align-self: center; color: var(--gold); font-size: 1.3rem; font-weight: bold; flex-shrink: 0; }
+
+  /* ===== SCORE BARS ===== */
+  .score-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.6rem; }
+  .score-label { width: 180px; font-size: 0.8rem; color: var(--charcoal); flex-shrink: 0; }
+  .score-bar-bg { flex: 1; height: 20px; background: #E5E7EB; border-radius: 10px; overflow: hidden; position: relative; }
+  .score-bar { height: 100%; border-radius: 10px; transition: width 0.8s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; }
+  .score-bar span { font-size: 0.7rem; font-weight: 700; color: white; }
+  .score-badge { width: 60px; text-align: center; flex-shrink: 0; }
+
+  /* ===== FOOTER ===== */
+  .footer { background: var(--navy); color: #94A3B8; text-align: center; padding: 1.5rem; font-size: 0.78rem; }
+  .footer a { color: var(--gold); text-decoration: none; }
+  .footer strong { color: white; }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 900px) { .grid-4 { grid-template-columns: 1fr 1fr; } .grid-5 { grid-template-columns: 1fr 1fr; } .dashboard { padding: 0.8rem; } .header { flex-direction: column; text-align: center; } }
+  @media (max-width: 600px) { .grid-4 { grid-template-columns: 1fr; } .chain { flex-direction: column; } .chain-arrow { transform: rotate(90deg); } .gate-box { padding: 2rem 1.5rem; } .gate-input { font-size: 0.9rem; } }
+</style>
+</head>
+<body>
+
+<!-- ========== ACCESS GATE ========== -->
+<div class="gate-overlay" id="gateOverlay">
+  <div class="gate-box">
+    <div class="gate-logo">
+      <div class="brand">BARAZA</div>
+      <div class="sub">Mining Forum</div>
+    </div>
+    <h2>Dashboard Interactif</h2>
+    <p class="gate-desc">Entrez votre code d'accès pour consulter le Cameroon Mining Sector Dashboard.</p>
+    <form onsubmit="validateGateCode(event)">
+      <div class="gate-input-group">
+        <input type="text" class="gate-input" id="gateCodeInput" placeholder="999-XXXXXXX-777" autocomplete="off" spellcheck="false" maxlength="15">
+      </div>
+      <button type="submit" class="gate-btn">Accéder au Dashboard</button>
+      <div class="gate-error" id="gateError">Code invalide. Le format attendu est : 123-ABCDEFG-456</div>
+    </form>
+    <div class="gate-footer">
+      <p>Pas encore de code ? <a href="index.html#playbook">Obtenir un accès gratuit</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== DASHBOARD CONTENT (hidden until gate is unlocked) ========== -->
+<div id="dashboardContent" style="display:none;">
+
+<!-- ========== HEADER ========== -->
+<div class="header">
+  <div class="header-logo">
+    <svg viewBox="0 0 200 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <text x="0" y="28" font-family="'Playfair Display', Georgia, serif" font-weight="800" font-size="24" fill="#C8963E" letter-spacing="2">StratMined</text>
+      <text x="0" y="44" font-family="'DM Sans', sans-serif" font-weight="400" font-size="10" fill="#94A3B8" letter-spacing="4">ADVISORY</text>
+      <rect x="0" y="48" width="120" height="1.5" fill="#C8963E" opacity="0.5"/>
+    </svg>
+  </div>
+  <div class="header-content">
+    <h1>Cameroon Mining Sector Dashboard</h1>
+    <div class="sub">Strategic Playbook — Interactive Data Companion</div>
+    <div class="tag">Francophone Africa Mining Forum | May 2026 | Data as of Q1 2026</div>
+  </div>
+  <div class="header-flag">
+    <span style="background:#007A3D;border-radius:2px 0 0 2px"></span>
+    <span style="background:#CE1126"></span>
+    <span style="background:#FCD116;border-radius:0 2px 2px 0"></span>
+  </div>
+  <div class="header-back">
+    <a href="index.html">← Retour au Forum</a>
+  </div>
+</div>
+
+<!-- ========== NAV ========== -->
+<div class="nav">
+  <button class="active" onclick="showSection('overview', this)">Overview</button>
+  <button onclick="showSection('resources', this)">Resources</button>
+  <button onclick="showSection('projects', this)">Projects Pipeline</button>
+  <button onclick="showSection('production', this)">Production & Trade</button>
+  <button onclick="showSection('regulatory', this)">Regulatory Framework</button>
+  <button onclick="showSection('revenue', this)">Revenue & EITI</button>
+  <button onclick="showSection('industrial', this)">Industrial Integration</button>
+  <button onclick="showSection('asm', this)">ASM Sector</button>
+  <button onclick="showSection('alignment', this)">AU/OECD Alignment</button>
+  <button onclick="showSection('licensing', this)">Licensing</button>
+  <button onclick="showSection('energy', this)">Energy & Infra</button>
+</div>
+
+<div class="dashboard">
+
+<!-- ==================== OVERVIEW ==================== -->
+<div class="section active" id="overview">
+  <h2 class="section-title">Sector Overview</h2>
+  <div class="grid grid-5">
+    <div class="card stat-card"><div class="value" style="color:var(--navy)">0.63%</div><div class="label">Mining GDP Contribution</div><div class="trend trend-up">&#8593; Growth with Minim-Martap</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--gold)">~5%</div><div class="label">Share of Total Exports</div><div class="trend trend-neutral">Aluminium-dominated</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--teal)">CFA 1,416Bn</div><div class="label">Extractive Revenues (2022)</div><div class="trend trend-up">&#8593; 82% vs 2021</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--red)">&lt;50%</div><div class="label">Territory Mapped</div><div class="trend trend-down">Major knowledge gap</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--accent)">53/100</div><div class="label">EITI Validation Score</div><div class="trend trend-neutral">Fairly Low</div></div>
+  </div>
+  <div class="grid grid-2" style="margin-top:1rem">
+    <div class="card"><h3>Extractive Revenue Trend (CFA Bn)</h3><div class="chart-container"><canvas id="revTrendChart"></canvas></div></div>
+    <div class="card"><h3>Top Mineral Resources (Million Tonnes)</h3><div class="chart-container"><canvas id="resourceChart"></canvas></div></div>
+  </div>
+  <div class="grid grid-2" style="margin-top:1rem">
+    <div class="card"><h3>Revenue vs Employment — Structural Imbalance</h3><div class="chart-container chart-sm"><canvas id="revEmpChart"></canvas></div></div>
+    <div class="card"><h3>Extractive Revenue by Sector (2022)</h3><div class="chart-container chart-sm"><canvas id="sectorChart"></canvas></div></div>
+  </div>
+  <div class="insight-box">
+    <h4>Key Insight</h4>
+    <p>Cameroon's extractive sector generated CFA 1,416 Bn in 2022 (up 82% from 776 Bn in 2021), but mining accounts for only 0.58% of these payments. With 2.4+ billion tonnes of iron ore, 1+ billion tonnes of bauxite, and potentially the world's largest primary cobalt deposit, the gap between geological potential and economic contribution is vast.</p>
+  </div>
+</div>
+
+<!-- ==================== RESOURCES ==================== -->
+<div class="section" id="resources">
+  <h2 class="section-title">Mineral Resources & Reserves</h2>
+  <div class="card">
+    <table>
+      <tr><th>Mineral</th><th>Key Deposits</th><th>Est. Resources/Reserves</th><th>Grade</th><th>Status</th></tr>
+      <tr><td><strong>Bauxite</strong></td><td>Minim-Martap, Ngaoundal, Birsok</td><td>1,027 Mt (JORC); 144 Mt Ore Reserve</td><td>51.2% Al2O3, 1.7% SiO2</td><td><span class="badge badge-green">Construction > 2026</span></td></tr>
+      <tr><td><strong>Iron Ore</strong></td><td>Mbalam-Nabeba</td><td>154 Mt</td><td>62.9% Fe</td><td><span class="badge badge-red">ICC Arbitration</span></td></tr>
+      <tr><td><strong>Iron Ore</strong></td><td>Nkout</td><td>~700 Mt potential</td><td>TBD</td><td><span class="badge badge-amber">Pre-development</span></td></tr>
+      <tr><td><strong>Iron Ore</strong></td><td>Bikoula/Ndjele</td><td>46 Mt (JORC)</td><td>Various</td><td><span class="badge badge-blue">Exploration</span></td></tr>
+      <tr><td><strong>Iron Ore</strong></td><td>Ngovayang</td><td>Under assessment</td><td>—</td><td><span class="badge badge-amber">Infrastructure prep</span></td></tr>
+      <tr><td><strong>Cobalt-Nickel</strong></td><td>Nkamouna-Mada</td><td>68.1 Mt</td><td>0.26% Co, 0.66% Ni, 1.48% Mn</td><td><span class="badge badge-red">Stalled since 2003</span></td></tr>
+      <tr><td><strong>Gold</strong></td><td>Colomine</td><td>480,000 t ore; 500 kg/yr target</td><td>—</td><td><span class="badge badge-green">First underground mine</span></td></tr>
+      <tr><td><strong>Gold</strong></td><td>Mbe/Bibemi (Oriole)</td><td>Up to 1.34 Moz</td><td>—</td><td><span class="badge badge-blue">Exploration</span></td></tr>
+      <tr><td><strong>Diamonds</strong></td><td>Mobilong</td><td>416 million carats (est.)</td><td>Gem + industrial</td><td><span class="badge badge-amber">Limited ops</span></td></tr>
+      <tr><td><strong>Limestone</strong></td><td>Bidzar (CIMENCAM)</td><td>224,304 t/yr produced</td><td>—</td><td><span class="badge badge-green">In production</span></td></tr>
+    </table>
+  </div>
+  <div class="insight-box">
+    <h4>Critical Minerals Opportunity</h4>
+    <p>Nkamouna's 68.1 Mt cobalt-nickel deposit (0.26% Co, 0.66% Ni) may be the world's largest primary cobalt resource — a critical mineral for EV batteries. Stalled since 2003, this deposit represents a strategic opportunity as cobalt demand is projected to triple by 2030.</p>
+  </div>
+</div>
+
+<!-- ==================== PROJECTS ==================== -->
+<div class="section" id="projects">
+  <h2 class="section-title">Mining Projects Pipeline</h2>
+  <div class="grid grid-2">
+    <div class="card"><h3>Project Stage Distribution</h3><div class="chart-container"><canvas id="projectStageChart"></canvas></div></div>
+    <div class="card"><h3>Capital Committed / At Stake (US$ M)</h3><div class="chart-container"><canvas id="capexChart"></canvas></div></div>
+  </div>
+  <div class="card" style="margin-top:1rem">
+    <table>
+      <tr><th>Project</th><th>Mineral</th><th>Operator</th><th>CAPEX</th><th>Timeline</th><th>Stage</th></tr>
+      <tr><td>Minim-Martap</td><td>Bauxite</td><td>Canyon (Camalco)</td><td>$96M > $446M</td><td>Q1 2026 mining start</td><td><span class="badge badge-green">Construction</span></td></tr>
+      <tr><td>Colomine Underground</td><td>Gold</td><td>SONAMINES/Codias</td><td>N/D</td><td>2025-26</td><td><span class="badge badge-green">Near-term</span></td></tr>
+      <tr><td>PROALU Plant</td><td>Aluminium</td><td>Prometal/Alucam</td><td>CFA 88Bn (~$145M)</td><td>Operational 2027</td><td><span class="badge badge-green">Construction</span></td></tr>
+      <tr><td>Ngovayang</td><td>Iron Ore</td><td>Jindal Steel</td><td>N/D</td><td>Infrastructure phase</td><td><span class="badge badge-teal">Pre-dev</span></td></tr>
+      <tr><td>Mbalam-Nabeba</td><td>Iron Ore</td><td>Sundance/CamIron</td><td>$5.5Bn disputed</td><td>ICC Arbitration</td><td><span class="badge badge-red">Stalled</span></td></tr>
+      <tr><td>Nkamouna</td><td>Co-Ni</td><td>Geovic (GeoCam)</td><td>N/D</td><td>Stalled since 2003</td><td><span class="badge badge-red">Stalled</span></td></tr>
+      <tr><td>Mbe / Bibemi</td><td>Gold</td><td>Oriole Resources</td><td>N/D</td><td>Up to 1.34 Moz</td><td><span class="badge badge-blue">Exploration</span></td></tr>
+      <tr><td>Alucam Edea</td><td>Aluminium</td><td>State (93.3%)</td><td>Operating</td><td>70,000 t/yr</td><td><span class="badge badge-green">Production</span></td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ==================== PRODUCTION & TRADE ==================== -->
+<div class="section" id="production">
+  <h2 class="section-title">Production, Exports & Trade</h2>
+  <div class="grid grid-4">
+    <div class="card stat-card"><div class="value" style="color:var(--teal)">70,000t</div><div class="label">Aluminium Production (2023)</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--gold)">43,916t</div><div class="label">Aluminium Exports (2023)</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--navy)">CFA 54.2Bn</div><div class="label">Aluminium Export Revenue</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--accent)">640 kg</div><div class="label">Gold Collected (SONAMINES 2024)</div></div>
+  </div>
+  <div class="grid grid-2" style="margin-top:1rem">
+    <div class="card"><h3>Aluminium Production & Exports (tonnes)</h3><div class="chart-container"><canvas id="aluChart"></canvas></div></div>
+    <div class="card"><h3>Export Destinations — Aluminium (2023)</h3><div class="chart-container"><canvas id="exportDestChart"></canvas></div></div>
+  </div>
+  <div class="insight-box">
+    <h4>Trade Dependency Alert</h4>
+    <p>France absorbs 36% of Cameroon's aluminium exports. Alucam imports 100% of its alumina raw material. With Minim-Martap bauxite production starting 2026 and PROALU creating CFA 48Bn/yr local demand from 2027, Cameroon has a clear pathway to end this double dependency.</p>
+  </div>
+</div>
+
+<!-- ==================== REGULATORY FRAMEWORK ==================== -->
+<div class="section" id="regulatory">
+  <h2 class="section-title">Regulatory Framework & 2023 Mining Code</h2>
+  <p class="section-subtitle">Law No. 2023/014 of 19 December 2023 | 8 Implementation Decrees issued November 2024</p>
+  <div class="grid grid-3">
+    <div class="card" style="border-top:3px solid var(--teal)"><h3 style="font-size:0.95rem">State Participation</h3><p style="font-size:0.82rem;color:var(--charcoal)">Mandatory 10% free carry (non-dilutable) in all mining companies. Can increase to 25% paid. SONAMINES integrated at 10% in capital.</p></div>
+    <div class="card" style="border-top:3px solid var(--gold)"><h3 style="font-size:0.95rem">Production Sharing</h3><p style="font-size:0.82rem;color:var(--charcoal)">State opts for production sharing as primary mode. 5% of production in-kind or cash.</p></div>
+    <div class="card" style="border-top:3px solid var(--teal)"><h3 style="font-size:0.95rem">SONAMINES Exclusive Rights</h3><p style="font-size:0.82rem;color:var(--charcoal)">Exclusive purchase and marketing of gold and diamonds nationwide. Manages State equity stakes.</p></div>
+    <div class="card" style="border-top:3px solid var(--gold)"><h3 style="font-size:0.95rem">Three New Funds</h3><p style="font-size:0.82rem;color:var(--charcoal)">Mining Development Fund, Site Restoration Fund, and Special Local Capacity Building Account (0.5-1% turnover).</p></div>
+    <div class="card" style="border-top:3px solid var(--teal)"><h3 style="font-size:0.95rem">Local Content</h3><p style="font-size:0.82rem;color:var(--charcoal)">95% non-specialist positions reserved for Cameroonians. Preference for Cameroonian subcontractors.</p></div>
+    <div class="card" style="border-top:3px solid var(--gold)"><h3 style="font-size:0.95rem">Six Mining Titles</h3><p style="font-size:0.82rem;color:var(--charcoal)">Artisanal, semi-mechanized artisanal, reconnaissance, research, small mine, industrial exploitation permits.</p></div>
+  </div>
+  <div class="card" style="margin-top:1rem">
+    <h3>Fiscal Regime Comparison</h3>
+    <table>
+      <tr><th>Tax / Fee</th><th>Research Phase</th><th>Exploitation Phase</th><th>Notes</th></tr>
+      <tr><td>Corporate Income Tax</td><td>Exempt</td><td>30%</td><td>Standard rate</td></tr>
+      <tr><td>Ad Valorem Royalty</td><td>N/A</td><td>2-15%</td><td>Varies by mineral</td></tr>
+      <tr><td>VAT</td><td>Exempt</td><td>19.25%</td><td>Standard regime</td></tr>
+      <tr><td>Production Sharing</td><td>N/A</td><td>5%</td><td>In-kind or cash</td></tr>
+      <tr><td>Local Capacity Fund</td><td>N/A</td><td>0.5-1%</td><td>Of company turnover</td></tr>
+      <tr><td>Fiscal Stability</td><td>Guaranteed</td><td>Guaranteed</td><td>For permit duration</td></tr>
+    </table>
+  </div>
+  <div class="grid grid-2" style="margin-top:1rem">
+    <div class="insight-box insight-gold"><h4>Investor Protections</h4><p>OHADA framework (17 states) | ICSID signatory | BITs with France, Germany, UK, China | ICC Arbitration | Free profit repatriation (subject to CEMAC controls) | Fiscal stability clause</p></div>
+    <div class="insight-box insight-red"><h4>Implementation Risks</h4><p>8 decrees only issued Nov 2024 — early stages | Model convention not standardized | SONAMINES capacity building | Inter-agency gaps (DGI/DGD/MINMIDT) | CEMAC exchange controls</p></div>
+  </div>
+</div>
+
+<!-- ==================== REVENUE & EITI ==================== -->
+<div class="section" id="revenue">
+  <h2 class="section-title">Revenue & EITI Deep Dive</h2>
+  <p class="section-subtitle">EITI Reports 2021 (17th) & 2022 (18th) | Validation February 2024</p>
+  <div class="grid grid-4">
+    <div class="card stat-card"><div class="value" style="color:var(--navy)">CFA 776Bn</div><div class="label">Total Extractive Payments (2021)</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--teal)">CFA 1,416Bn</div><div class="label">Total Extractive Payments (2022)</div><div class="trend trend-up">&#8593; +82.5%</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--gold)">CFA 8.17Bn</div><div class="label">Mining & Quarries (2022)</div><div class="trend trend-neutral">0.58% of total</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--red)">53/100</div><div class="label">EITI Validation Score</div><div class="trend trend-down">Fairly Low</div></div>
+  </div>
+  <div class="grid grid-2" style="margin-top:1rem">
+    <div class="card"><h3>Extractive Revenue by Sector (2022, CFA Bn)</h3><div class="chart-container chart-sm"><canvas id="eitiSectorChart"></canvas></div></div>
+    <div class="card"><h3>Revenue by Collecting Agency (2022)</h3><div class="chart-container chart-sm"><canvas id="eitiAgencyChart"></canvas></div></div>
+  </div>
+  <div class="card" style="margin-top:1rem">
+    <h3>EITI Validation Scorecard (February 2024)</h3>
+    <div style="margin-top:0.8rem">
+      <div class="score-row"><div class="score-label">Revenue Collection</div><div class="score-bar-bg"><div class="score-bar" style="width:80%;background:var(--green)"><span>80%</span></div></div><div class="score-badge"><span class="badge badge-green">Adequate</span></div></div>
+      <div class="score-row"><div class="score-label">State Participation</div><div class="score-bar-bg"><div class="score-bar" style="width:55%;background:var(--accent)"><span>55%</span></div></div><div class="score-badge"><span class="badge badge-amber">Meaningful</span></div></div>
+      <div class="score-row"><div class="score-label">Contract Transparency</div><div class="score-bar-bg"><div class="score-bar" style="width:55%;background:var(--accent)"><span>55%</span></div></div><div class="score-badge"><span class="badge badge-amber">Meaningful</span></div></div>
+      <div class="score-row"><div class="score-label">Subnational Transfers</div><div class="score-bar-bg"><div class="score-bar" style="width:55%;background:var(--accent)"><span>55%</span></div></div><div class="score-badge"><span class="badge badge-amber">Meaningful</span></div></div>
+      <div class="score-row"><div class="score-label">Beneficial Ownership</div><div class="score-bar-bg"><div class="score-bar" style="width:20%;background:var(--red)"><span>20%</span></div></div><div class="score-badge"><span class="badge badge-red">Inadequate</span></div></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:1rem">
+    <h3>Mining Sector Revenue Breakdown (2022)</h3>
+    <table>
+      <tr><th>Revenue Stream</th><th>Amount (CFA M)</th><th>Collecting Agency</th></tr>
+      <tr><td>Taxes Ad Valorem + extraction</td><td>632</td><td>DGI</td></tr>
+      <tr><td>SONAMINES collections</td><td>6,790 (in-kind)</td><td>SONAMINES</td></tr>
+      <tr><td>Customs duties (mining)</td><td>57.77</td><td>DGD</td></tr>
+      <tr><td>Corporate Income Tax (mining)</td><td>5.96</td><td>DGI</td></tr>
+      <tr><td>Surface rent & fees</td><td>225.69</td><td>DGI</td></tr>
+      <tr><td>Social & environmental</td><td>50</td><td>Various</td></tr>
+      <tr><td>SNI dividends (Alucam)</td><td>380</td><td>SNI</td></tr>
+      <tr><td><strong>Total Mining & Quarries</strong></td><td><strong>8,170</strong></td><td><strong>0.58% of extractive total</strong></td></tr>
+    </table>
+  </div>
+  <div class="insight-box"><h4>EITI Key Finding</h4><p>25% of ad valorem and extraction taxes are allocated to affected local communities under the new Code. Beneficial ownership disclosure scored "Inadequate" — a corrective action priority for EITI validation.</p></div>
+</div>
+
+<!-- ==================== INDUSTRIAL INTEGRATION ==================== -->
+<div class="section" id="industrial">
+  <h2 class="section-title">Industrial Integration — Alucam & Prometal</h2>
+  <div class="card">
+    <h3>Bauxite-to-Finished Products: Africa's First Integrated Value Chain</h3>
+    <div class="chain">
+      <div class="chain-step"><div class="step-top" style="background:var(--teal)"></div><strong>Bauxite Mining</strong><small>Minim-Martap (Canyon)<br>1.2Mt > 10Mt/yr</small></div>
+      <div class="chain-arrow">&#8594;</div>
+      <div class="chain-step"><div class="step-top" style="background:var(--accent)"></div><strong>Alumina Refining</strong><small>Planned<br>Feasibility Q3 2026</small></div>
+      <div class="chain-arrow">&#8594;</div>
+      <div class="chain-step"><div class="step-top" style="background:var(--navy)"></div><strong>Aluminium Smelting</strong><small>Alucam (Edea)<br>70,000 t/yr</small></div>
+      <div class="chain-arrow">&#8594;</div>
+      <div class="chain-step"><div class="step-top" style="background:var(--gold)"></div><strong>Transformation</strong><small>PROALU (Douala)<br>60,000 t/yr from 2027</small></div>
+      <div class="chain-arrow">&#8594;</div>
+      <div class="chain-step"><div class="step-top" style="background:var(--green)"></div><strong>Finished Products</strong><small>Coils, panels, cables<br>Local + export</small></div>
+    </div>
+  </div>
+  <div class="grid grid-2" style="margin-top:1rem">
+    <div class="card">
+      <h3>Alucam — Current State</h3>
+      <table>
+        <tr><td><strong>Established</strong></td><td>1954</td></tr>
+        <tr><td><strong>Ownership</strong></td><td>State 93.3%, AFD 5.6%, SNI 1.1%</td></tr>
+        <tr><td><strong>Capacity</strong></td><td>~100,000 t/yr (constrained by power)</td></tr>
+        <tr><td><strong>Production (2023)</strong></td><td>~70,000 tonnes (70% utilization)</td></tr>
+        <tr><td><strong>Exports (2023)</strong></td><td>43,916 t | CFA 54.2Bn</td></tr>
+        <tr><td><strong>Local sales</strong></td><td>37.3% of output</td></tr>
+        <tr style="background:#FEE2E2"><td><strong>Raw material</strong></td><td><strong style="color:var(--red)">100% IMPORTED alumina</strong></td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <h3>PROALU — Transformation Impact</h3>
+      <div class="grid grid-2" style="gap:0.5rem">
+        <div class="stat-card" style="padding:0.5rem"><div class="value" style="font-size:1.3rem;color:var(--gold)">CFA 88Bn</div><div class="label">Investment (~$145M)</div></div>
+        <div class="stat-card" style="padding:0.5rem"><div class="value" style="font-size:1.3rem;color:var(--teal)">60,000 t/yr</div><div class="label">Alu coils + steel + cables</div></div>
+        <div class="stat-card" style="padding:0.5rem"><div class="value" style="font-size:1.3rem;color:var(--gold)">CFA 48Bn/yr</div><div class="label">Alucam output absorbed</div></div>
+        <div class="stat-card" style="padding:0.5rem"><div class="value" style="font-size:1.3rem;color:var(--green)">CFA 30Bn+/yr</div><div class="label">Import substitution</div></div>
+        <div class="stat-card" style="padding:0.5rem"><div class="value" style="font-size:1.3rem;color:var(--navy)">1,500</div><div class="label">Direct jobs created</div></div>
+        <div class="stat-card" style="padding:0.5rem"><div class="value" style="font-size:1.3rem;color:var(--accent)">2027</div><div class="label">Operational date</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="insight-box"><h4>Strategic Assessment</h4><p>Cameroon is positioning itself as the first country in Africa with a complete bauxite-alumina-aluminium integrated value chain. The capacity gap at Alucam (30,000 t/yr unused = CFA 23Bn opportunity) is directly linked to power supply — Nachtigal Dam's 420 MW addresses this constraint.</p></div>
+</div>
+
+<!-- ==================== ASM SECTOR ==================== -->
+<div class="section" id="asm">
+  <h2 class="section-title">Artisanal & Small-Scale Mining (ASM)</h2>
+  <div class="grid grid-4">
+    <div class="card stat-card"><div class="value" style="color:var(--red)">90%</div><div class="label">Operations Without Licences</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--accent)">CFA 1Bn/mo</div><div class="label">Est. Treasury Loss</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--teal)">640 kg</div><div class="label">Gold Collected (2024)</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--red)">~15 tonnes</div><div class="label">Gold Smuggled Annually</div></div>
+  </div>
+  <div class="grid grid-2" style="margin-top:1rem">
+    <div class="card"><h3>Gold Capture Gap — Formal vs Informal</h3><div class="chart-container"><canvas id="goldFormalChart"></canvas></div></div>
+    <div class="card">
+      <h3>ASM Formalization Roadmap</h3>
+      <div style="padding:0.3rem">
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.7rem"><div style="width:28px;height:28px;background:var(--navy);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;flex-shrink:0">1</div><div style="font-size:0.82rem"><strong>Regulatory:</strong> 2023 Code decentralizes ASM to local councils; 6 title categories</div></div>
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.7rem"><div style="width:28px;height:28px;background:var(--teal);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;flex-shrink:0">2</div><div style="font-size:0.82rem"><strong>Institutional:</strong> SONAMINES replaces CAPAM for ASM oversight & gold/diamond marketing</div></div>
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.7rem"><div style="width:28px;height:28px;background:var(--gold);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;flex-shrink:0">3</div><div style="font-size:0.82rem"><strong>Enforcement:</strong> Mandatory closed-loop processing from Jan 2026</div></div>
+        <div style="display:flex;align-items:center;gap:0.5rem;margin-bottom:0.7rem"><div style="width:28px;height:28px;background:var(--accent);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;flex-shrink:0">4</div><div style="font-size:0.82rem"><strong>Value Addition:</strong> SONAMINES gold refinery plan — London Bullion Market grade</div></div>
+        <div style="display:flex;align-items:center;gap:0.5rem"><div style="width:28px;height:28px;background:var(--green);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.75rem;flex-shrink:0">5</div><div style="font-size:0.82rem"><strong>Benchmark:</strong> Burkina Faso's SONASP — 29.56t artisanal gold in 9 months (2025)</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="insight-box insight-gold"><h4>Revenue Potential</h4><p>If Cameroon captures just 25% of the ~15 tonnes smuggled gold, annual revenue could increase by CFA 75+ billion — 15x current mining tax revenue.</p></div>
+</div>
+
+<!-- ==================== AU/OECD ALIGNMENT ==================== -->
+<div class="section" id="alignment">
+  <h2 class="section-title">AU & International Framework Alignment</h2>
+  <p class="section-subtitle">Assessment based on Africa Mining Vision (2009), Agenda 2063, AfCFTA, AMREC, OECD Due Diligence</p>
+  <div class="card"><h3>Framework Alignment Scorecard</h3><div class="chart-container" style="height:320px"><canvas id="alignmentChart"></canvas></div></div>
+  <div class="card" style="margin-top:1rem">
+    <table>
+      <tr><th>Framework</th><th>Alignment Level</th><th>Assessment</th></tr>
+      <tr><td><strong>Africa Mining Vision (2009)</strong></td><td><span class="badge badge-amber">Partially Aligned</span></td><td>New code promotes local value addition, but gaps remain</td></tr>
+      <tr><td><strong>Agenda 2063 (AU)</strong></td><td><span class="badge badge-teal">Aligned in Ambition</span></td><td>SND30 targets mining-metal industry as growth pillar</td></tr>
+      <tr><td><strong>AfCFTA (2018)</strong></td><td><span class="badge badge-green">Opportunity</span></td><td>Well-positioned via Douala port; CEMAC integration underway</td></tr>
+      <tr><td><strong>AMREC (2021)</strong></td><td><span class="badge badge-amber">In Development</span></td><td>Relies on JORC; AMREC adoption would harmonize reporting</td></tr>
+      <tr><td><strong>OECD Due Diligence</strong></td><td><span class="badge badge-amber">Partial</span></td><td>Kimberley Process member; no mandatory supply chain due diligence</td></tr>
+      <tr><td><strong>GEWE (Gender)</strong></td><td><span class="badge badge-red">Early Stage</span></td><td>2023 code silent on gender mainstreaming</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ==================== LICENSING ==================== -->
+<div class="section" id="licensing">
+  <h2 class="section-title">Licensing & Permits</h2>
+  <div class="grid grid-3">
+    <div class="card stat-card"><div class="value" style="color:var(--navy)">122</div><div class="label">Industrial Mining Permits</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--gold)">1,000+</div><div class="label">ASM Permits Issued</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--red)">~90%</div><div class="label">ASM Without Licences</div></div>
+  </div>
+  <div class="grid grid-2" style="margin-top:1rem">
+    <div class="card"><h3>Licensed vs Unlicensed Mining Sites</h3><div class="chart-container"><canvas id="licensedChart"></canvas></div></div>
+    <div class="card">
+      <h3>Permit Types (2023 Mining Code)</h3>
+      <table style="font-size:0.8rem">
+        <tr><th>Permit Type</th><th>Granting Authority</th><th>Duration</th></tr>
+        <tr><td>Artisanal Mining Card</td><td>Regional Delegate / CTD</td><td>1 year, renewable</td></tr>
+        <tr><td>Semi-Mechanized Artisanal</td><td>Minister of Mines</td><td>2 years, renewable</td></tr>
+        <tr><td>Reconnaissance Permit</td><td>Minister of Mines</td><td>1 year, renewable 1x</td></tr>
+        <tr><td>Research Permit</td><td>Minister of Mines</td><td>3 years, renewable 2x</td></tr>
+        <tr><td>Small Mine Exploitation</td><td>Minister of Mines</td><td>5 years, renewable</td></tr>
+        <tr><td>Industrial Exploitation</td><td>Presidential Decree</td><td>25 years, renewable</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== ENERGY & INFRA ==================== -->
+<div class="section" id="energy">
+  <h2 class="section-title">Energy & Infrastructure</h2>
+  <div class="grid grid-3">
+    <div class="card stat-card"><div class="value" style="color:var(--teal)">~75%</div><div class="label">Hydroelectric Power Share</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--navy)">$818M</div><div class="label">World Bank Rail (PQ2)</div></div>
+    <div class="card stat-card"><div class="value" style="color:var(--gold)">420 MW</div><div class="label">Nachtigal Dam (operational)</div></div>
+  </div>
+  <div class="grid grid-2" style="margin-top:1rem">
+    <div class="card"><h3>Energy Mix</h3><div class="chart-container"><canvas id="energyChart"></canvas></div></div>
+    <div class="card">
+      <h3>Critical Infrastructure Projects</h3>
+      <table style="font-size:0.8rem">
+        <tr><th>Project</th><th>Investment</th><th>Status</th></tr>
+        <tr><td>PQ2 Rail Upgrade</td><td>$818M (WB)</td><td><span class="badge badge-amber">2030 target</span></td></tr>
+        <tr><td>Nachtigal Dam (420 MW)</td><td>$1.2Bn</td><td><span class="badge badge-green">Operational</span></td></tr>
+        <tr><td>Minim-Martap Haul Road</td><td>Canyon funded</td><td><span class="badge badge-amber">Under construction</span></td></tr>
+        <tr><td>Kribi Deep-Sea Port</td><td>Phase 2</td><td><span class="badge badge-amber">Planned</span></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="insight-box"><h4>Infrastructure is the Bottleneck</h4><p>There is no dedicated mining-renewable energy policy. Alucam's production constraint is directly linked to power supply. Solar potential is strong in the North/Far North for ASM sites.</p></div>
+</div>
+
+</div><!-- end dashboard -->
+
+<!-- ========== FOOTER ========== -->
+<div class="footer">
+  <strong>StratMined Advisory</strong> — Cameroon Mining Sector Dashboard 2026<br>
+  Prepared for the <a href="index.html">Baraza Mining Forum</a> | May 2026<br>
+  Contact: <a href="mailto:hera.mpondo@stratmined.com">hera.mpondo@stratmined.com</a><br>
+  <span style="font-size:0.7rem;color:#64748B">In Partnership with iTraceiT | 20 Wenlock Road, London N1 7GU</span>
+</div>
+
+</div><!-- end dashboardContent -->
+
+<!-- ========== SCRIPTS ========== -->
+<script>
+// ===== GATE VALIDATION =====
+function validateGateCode(e) {
+  e.preventDefault();
+  var input = document.getElementById('gateCodeInput').value.trim().toUpperCase();
+  var regex = /^\d{3}-[A-Z]{7}-\d{3}$/;
+
+  if (regex.test(input)) {
+    // Valid code — unlock the dashboard
+    unlockDashboard();
+  } else {
+    // Invalid — show error
+    var err = document.getElementById('gateError');
+    err.classList.add('visible');
+    document.getElementById('gateCodeInput').style.borderColor = '#DC2626';
+    setTimeout(function() {
+      err.classList.remove('visible');
+      document.getElementById('gateCodeInput').style.borderColor = '';
+    }, 3000);
+  }
+}
+
+function unlockDashboard() {
+  var gate = document.getElementById('gateOverlay');
+  var content = document.getElementById('dashboardContent');
+
+  // Fade out gate
+  gate.classList.add('hidden');
+
+  // Show dashboard content
+  content.style.display = 'block';
+
+  // Wait for transition, then remove gate and initialize charts
+  setTimeout(function() {
+    gate.style.display = 'none';
+    initializeDashboardCharts();
+  }, 500);
+}
+
+// ===== SECTION NAVIGATION =====
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(function(s) { s.classList.remove('active'); });
+  document.querySelectorAll('.nav button').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ===== DEFERRED CHART INITIALIZATION =====
+// Charts MUST be initialized AFTER the gate is removed and content is visible,
+// because Chart.js needs visible containers to calculate dimensions.
+function initializeDashboardCharts() {
+  var NAVY='#1B2A4A', GOLD='#C5922E', TEAL='#0D7C71', RED='#DC2626', GREEN='#16A34A', AMBER='#D97706', SLATE='#475569', MUTED='#6B7280';
+  Chart.defaults.font.family = "'DM Sans', sans-serif";
+
+  // Revenue Trend
+  new Chart(document.getElementById('revTrendChart'), {
+    type: 'bar', data: {
+      labels: ['2019','2020','2021','2022'],
+      datasets: [
+        { label: 'Total Extractive (CFA Bn)', data: [650, 520, 776, 1416], backgroundColor: NAVY },
+        { label: 'Mining & Quarries (CFA Bn)', data: [3.5, 3.0, 4.84, 8.17], backgroundColor: GOLD, yAxisID: 'y1' }
+      ]
+    }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top', labels: { font: { size: 10 } } } },
+      scales: { y: { beginAtZero: true, title: { display: true, text: 'Total', font: { size: 9 } } }, y1: { position: 'right', beginAtZero: true, grid: { display: false }, title: { display: true, text: 'Mining only', font: { size: 9 } } } } }
+  });
+
+  // Resources
+  new Chart(document.getElementById('resourceChart'), {
+    type: 'bar', data: {
+      labels: ['Bauxite\n(Minim-Martap)', 'Iron Ore\n(Nkout)', 'Iron Ore\n(Mbalam)', 'Co-Ni\n(Nkamouna)', 'Iron Ore\n(Bikoula)'],
+      datasets: [{ label: 'Million Tonnes', data: [1027, 700, 154, 68.1, 46], backgroundColor: [TEAL,NAVY,NAVY,GOLD,NAVY] }]
+    }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+  });
+
+  // Revenue vs Employment
+  new Chart(document.getElementById('revEmpChart'), {
+    type: 'bar', data: {
+      labels: ['Revenue Share', 'Employment Share'],
+      datasets: [
+        { label: 'Oil & Gas', data: [99, 5], backgroundColor: NAVY },
+        { label: 'Industrial Mining', data: [0.5, 3], backgroundColor: TEAL },
+        { label: 'ASM', data: [0.5, 92], backgroundColor: GOLD }
+      ]
+    }, options: { responsive: true, maintainAspectRatio: false, scales: { x: { stacked: true }, y: { stacked: true, max: 100 } }, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } } }
+  });
+
+  // Sector Share
+  new Chart(document.getElementById('sectorChart'), {
+    type: 'doughnut', data: {
+      labels: ['Hydrocarbons (96.0%)', 'Transport (3.42%)', 'Mining & Quarries (0.58%)'],
+      datasets: [{ data: [96, 3.42, 0.58], backgroundColor: [NAVY, SLATE, GOLD], borderWidth: 0 }]
+    }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 10 } } } } }
+  });
+
+  // Project Stages
+  new Chart(document.getElementById('projectStageChart'), {
+    type: 'doughnut', data: {
+      labels: ['In Production', 'Construction/Near-term', 'Advanced Exploration', 'Stalled/Dispute', 'Early Exploration'],
+      datasets: [{ data: [3, 3, 3, 2, 4], backgroundColor: [GREEN, TEAL, GOLD, RED, MUTED] }]
+    }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 10 } } } } }
+  });
+
+  // CAPEX
+  new Chart(document.getElementById('capexChart'), {
+    type: 'bar', data: {
+      labels: ['Mbalam\n(disputed)', 'Minim-Martap\n(lifecycle)', 'PROALU\n(Prometal)', 'Minim-Martap\n(Phase 1)'],
+      datasets: [{ label: 'US$ Million', data: [5500, 446, 145, 96], backgroundColor: [RED, TEAL, GOLD, TEAL] }]
+    }, options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } } }
+  });
+
+  // Aluminium
+  new Chart(document.getElementById('aluChart'), {
+    type: 'bar', data: {
+      labels: ['2019', '2020', '2021', '2022', '2023'],
+      datasets: [
+        { label: 'Production', data: [52000, 49300, 55000, 65000, 70000], backgroundColor: NAVY },
+        { label: 'Exports', data: [35000, 33000, 38000, 40000, 43916], backgroundColor: GOLD }
+      ]
+    }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } }, plugins: { legend: { position: 'top' } } }
+  });
+
+  // Export Destinations
+  new Chart(document.getElementById('exportDestChart'), {
+    type: 'pie', data: {
+      labels: ['France (36%)', 'Other EU (22%)', 'Africa/CEMAC (18%)', 'Asia (14%)', 'Other (10%)'],
+      datasets: [{ data: [36, 22, 18, 14, 10], backgroundColor: [NAVY, SLATE, TEAL, GOLD, MUTED] }]
+    }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+  });
+
+  // EITI Sector
+  new Chart(document.getElementById('eitiSectorChart'), {
+    type: 'bar', data: {
+      labels: ['Hydrocarbures', 'Transport\npetrolier', 'Mines &\nCarrieres'],
+      datasets: [{ label: 'CFA Bn', data: [1359.61, 48.44, 8.17], backgroundColor: [NAVY, SLATE, GOLD] }]
+    }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+  });
+
+  // EITI Agency
+  new Chart(document.getElementById('eitiAgencyChart'), {
+    type: 'doughnut', data: {
+      labels: ['SNH (74.80%)', 'DGI (20.02%)', 'DGD (3.45%)', 'DGTCFM (0.88%)', 'SONAMINES (0.48%)', 'Other (0.37%)'],
+      datasets: [{ data: [74.80, 20.02, 3.45, 0.88, 0.48, 0.37], backgroundColor: [NAVY, TEAL, GOLD, AMBER, GREEN, MUTED], borderWidth: 0 }]
+    }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { font: { size: 9 } } } } }
+  });
+
+  // Gold Formal vs Informal
+  new Chart(document.getElementById('goldFormalChart'), {
+    type: 'bar', data: {
+      labels: ['Formal (SONAMINES)\n640 kg', 'Smuggled/Informal\n~15,000 kg'],
+      datasets: [{ label: 'kg/year', data: [640, 15000], backgroundColor: [GREEN, RED] }]
+    }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+  });
+
+  // AU Alignment Radar
+  new Chart(document.getElementById('alignmentChart'), {
+    type: 'radar', data: {
+      labels: ['Africa Mining\nVision', 'Agenda\n2063', 'AfCFTA', 'AMREC', 'OECD Due\nDiligence', 'GEWE\n(Gender)', 'EITI'],
+      datasets: [{
+        label: 'Cameroon Alignment (%)', data: [45, 60, 65, 30, 40, 20, 53],
+        backgroundColor: 'rgba(13,124,113,0.15)', borderColor: TEAL, borderWidth: 2, pointBackgroundColor: TEAL
+      }, {
+        label: 'Target (%)', data: [80, 80, 80, 80, 80, 80, 80],
+        backgroundColor: 'rgba(197,146,46,0.08)', borderColor: GOLD, borderWidth: 1.5, borderDash: [5,5], pointBackgroundColor: GOLD
+      }]
+    }, options: { responsive: true, maintainAspectRatio: false, scales: { r: { beginAtZero: true, max: 100, ticks: { font: { size: 8 } }, pointLabels: { font: { size: 9 } } } }, plugins: { legend: { position: 'bottom', labels: { font: { size: 10 } } } } }
+  });
+
+  // Licensed vs Unlicensed
+  new Chart(document.getElementById('licensedChart'), {
+    type: 'doughnut', data: {
+      labels: ['Unlicensed ASM (~90%)', 'Licensed ASM (~10%)', 'Industrial Permits (122)'],
+      datasets: [{ data: [90, 10, 12], backgroundColor: [RED, GOLD, TEAL] }]
+    }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+  });
+
+  // Energy Mix
+  new Chart(document.getElementById('energyChart'), {
+    type: 'doughnut', data: {
+      labels: ['Hydroelectric (~75%)', 'Thermal/Gas (~20%)', 'Solar/Other (<5%)'],
+      datasets: [{ data: [75, 20, 5], backgroundColor: [TEAL, SLATE, GOLD] }]
+    }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+  });
+}
+
+// Auto-format code input as user types
+document.getElementById('gateCodeInput').addEventListener('input', function(e) {
+  var val = this.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+  var formatted = '';
+  for (var i = 0; i < val.length && i < 13; i++) {
+    if (i === 3 || i === 10) formatted += '-';
+    formatted += val[i];
+  }
+  this.value = formatted;
+});
+</script>
+</body>
+</html>
