@@ -2349,7 +2349,7 @@ function generateUnlockCode() {
  *       try {
  *         var playbookFile = DriveApp.getFileById(PLAYBOOK_FILE_ID);
  *         attachments.push(playbookFile.getAs(MimeType.PDF));
- *       } catch(err) { /* File not found — skip attachment */ }
+ *       } catch(err) { // File not found -- skip attachment }
  *
  *       MailApp.sendEmail({
  *         to: data.email,
