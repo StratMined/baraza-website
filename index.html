@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Baraza Mining Forum — Les Rencontres Africaines de l'Industrie Minière Responsable</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<!-- CinetPay Seamless SDK — Payment gateway for mobile money & cards -->
-<script src="https://cdn.cinetpay.com/seamless/main.js" type="text/javascript"></script>
+<!-- CinetPay Seamless SDK — loaded async to avoid blocking page render -->
+<script src="https://cdn.cinetpay.com/seamless/main.js" type="text/javascript" async defer onerror="console.warn('[Baraza] CinetPay SDK failed to load — payment features unavailable')"></script>
 <style>
 :root {
   --gold: #C8963E;
@@ -2594,6 +2594,10 @@ function handleEventSubmit(e) {
 
 // ===== CINETPAY CHECKOUT =====
 function launchCinetPayCheckout(formData) {
+  if (typeof CinetPay === 'undefined') {
+    alert('Le module de paiement n\'est pas encore chargé. Veuillez réessayer dans quelques secondes.');
+    return;
+  }
   var transactionId = 'BARAZA-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
 
   CinetPay.setConfig({
