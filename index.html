@@ -1144,15 +1144,25 @@ section { padding: 6rem 3rem; }
   50% { opacity: 0.4; }
 }
 
+/* CSS-only safety net: if JS fails, elements become visible after 2s */
+@keyframes revealFallback {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Fallback animation fires after 2s — overridden by JS adding .visible sooner */
+  animation: revealFallback 0.8s ease 2s both;
 }
 
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
+  /* Cancel fallback animation once JS has taken over */
+  animation: none;
 }
 
 /* ===== MOBILE & TABLET ===== */
@@ -2199,25 +2209,43 @@ section { padding: 6rem 3rem; }
 </div>
 
 <script>
+// ===== ERROR-SAFE WRAPPER =====
+// Each critical section wrapped to prevent cascading JS failures
+
 // ===== NAV SCROLL EFFECT =====
-const nav = document.getElementById('mainNav');
-window.addEventListener('scroll', () => {
-  nav.classList.toggle('scrolled', window.scrollY > 80);
-});
+try {
+  const nav = document.getElementById('mainNav');
+  if (nav) {
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 80);
+    });
+  }
+} catch(e) { console.warn('[Baraza] Nav scroll error:', e); }
 
 // ===== SCROLL REVEAL =====
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry, i) => {
-    if (entry.isIntersecting) {
-      setTimeout(() => {
-        entry.target.classList.add('visible');
-      }, i * 80);
-      observer.unobserve(entry.target);
-    }
-  });
-}, { threshold: 0.15 });
-reveals.forEach(el => observer.observe(el));
+try {
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(el => observer.observe(el));
+} catch(e) { console.warn('[Baraza] Reveal observer error:', e); }
+
+// ===== SAFETY NET: Force-reveal after 4s if JS observer failed =====
+setTimeout(function() {
+  var hidden = document.querySelectorAll('.reveal:not(.visible)');
+  if (hidden.length > 0) {
+    console.warn('[Baraza] Safety net: forcing', hidden.length, 'hidden elements visible');
+    hidden.forEach(function(el) { el.classList.add('visible'); });
+  }
+}, 4000);
 
 // ===== UNLOCK CODE GENERATION =====
 // Format: 999-XXXXXXX-777 (3 digits, 7 uppercase letters, 3 digits)
@@ -2705,21 +2733,20 @@ function handleSponsorSubmit(e) {
 }
 
 // Close modals on overlay click
-document.getElementById('eventModal').addEventListener('click', function(e) {
-  if (e.target === this) closeEventModal();
-});
-
-document.getElementById('eventConfirmModal').addEventListener('click', function(e) {
-  if (e.target === this) closeEventConfirmModal();
-});
-
-document.getElementById('successModal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
-
-document.getElementById('sponsorModal').addEventListener('click', function(e) {
-  if (e.target === this) closeSponsorModal();
-});
+try {
+  document.getElementById('eventModal').addEventListener('click', function(e) {
+    if (e.target === this) closeEventModal();
+  });
+  document.getElementById('eventConfirmModal').addEventListener('click', function(e) {
+    if (e.target === this) closeEventConfirmModal();
+  });
+  document.getElementById('successModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.getElementById('sponsorModal').addEventListener('click', function(e) {
+    if (e.target === this) closeSponsorModal();
+  });
+} catch(e) { console.warn('[Baraza] Modal overlay listener error:', e); }
 
 // ===== HAMBURGER MENU =====
 function toggleNav() {
@@ -2751,20 +2778,22 @@ function toggleLang() {
 }
 
 // ===== SMOOTH SCROLL =====
-document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-  anchor.addEventListener('click', function(e) {
-    var href = this.getAttribute('href');
-    if (href === '#') return; // Skip empty anchors
-    var target = document.querySelector(href);
-    if (target) {
-      e.preventDefault();
-      closeNav();
-      setTimeout(function() {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 100);
-    }
+try {
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+    anchor.addEventListener('click', function(e) {
+      var href = this.getAttribute('href');
+      if (href === '#') return; // Skip empty anchors
+      var target = document.querySelector(href);
+      if (target) {
+        e.preventDefault();
+        closeNav();
+        setTimeout(function() {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    });
   });
-});
+} catch(e) { console.warn('[Baraza] Smooth scroll error:', e); }
 
 // ===== FORCE VIDEO PLAY ON MOBILE =====
 (function() {
