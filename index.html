@@ -1535,6 +1535,70 @@ section { padding: 6rem 3rem; }
   color: var(--teal-light);
   font-family: 'Space Mono', monospace;
 }
+
+/* ===== ORGANIZER LINKEDIN ===== */
+.org-linkedin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  background: rgba(200,150,62,0.1);
+  border: 1px solid rgba(200,150,62,0.2);
+  color: var(--gold-light);
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-top: 0.6rem;
+  transition: all 0.3s;
+}
+
+.org-linkedin:hover {
+  background: #0A66C2;
+  border-color: #0A66C2;
+  color: white;
+}
+
+.org-linkedin svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+/* ===== SPONSORING MODAL ===== */
+.sponsor-modal .modal {
+  max-width: 560px;
+  text-align: left;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.sponsor-modal .modal h3 {
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+
+.sponsor-modal .modal .form-sub {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+/* ===== DASHBOARD EXPIRY NOTICE ===== */
+.expiry-notice {
+  background: rgba(200,150,62,0.08);
+  border: 1px solid rgba(200,150,62,0.2);
+  border-radius: 6px;
+  padding: 0.6rem 0.8rem;
+  margin-top: 0.8rem;
+  font-size: 0.75rem;
+  color: var(--gold-light);
+  text-align: center;
+  line-height: 1.4;
+}
 </style>
 </head>
 <body>
@@ -1623,7 +1687,7 @@ section { padding: 6rem 3rem; }
       </div>
     </div>
     <div class="hero-actions">
-      <a href="#playbook" class="btn-primary">Accéder au Playbook ↗</a>
+      <a href="#playbook" class="btn-primary">Inscrivez-vous & Accédez au Playbook ↗</a>
       <a href="#programme" class="btn-secondary">Découvrir le Programme</a>
     </div>
   </div>
@@ -1769,12 +1833,12 @@ section { padding: 6rem 3rem; }
       <div class="dashboard-teaser reveal">
         <div class="teaser-stats">
           <div class="teaser-stat">
-            <div class="t-value">0.63%</div>
-            <div class="t-label">Mining GDP Contribution</div>
+            <div class="t-value">0,63%</div>
+            <div class="t-label">Contribution minière au PIB</div>
           </div>
           <div class="teaser-stat">
-            <div class="t-value">CFA 1,416Bn</div>
-            <div class="t-label">Extractive Revenues (2022)</div>
+            <div class="t-value">1 416 Mds</div>
+            <div class="t-label">Revenus extractifs (2022, FCFA)</div>
           </div>
           <div class="teaser-stat">
             <div class="t-value">122</div>
@@ -1825,8 +1889,8 @@ section { padding: 6rem 3rem; }
             <input type="text" name="organisation" placeholder="Votre entreprise ou institution" required>
           </div>
           <div class="form-group">
-            <label>Fonction</label>
-            <input type="text" name="fonction" placeholder="Directeur, Analyste, Consultant...">
+            <label>Fonction *</label>
+            <input type="text" name="fonction" placeholder="Directeur, Analyste, Consultant..." required>
           </div>
           <div class="form-group">
             <label>Profil *</label>
@@ -1844,10 +1908,10 @@ section { padding: 6rem 3rem; }
             </select>
           </div>
           <div class="form-group">
-            <label>Pays</label>
-            <input type="text" name="pays" placeholder="Cameroun, France, RDC...">
+            <label>Pays *</label>
+            <input type="text" name="pays" placeholder="Cameroun, France, RDC..." required>
           </div>
-          <button type="submit" class="btn-form">Accéder au Dashboard & Playbook →</button>
+          <button type="submit" class="btn-form">Inscrivez-vous & Accédez au Dashboard →</button>
         </form>
         <p class="form-note">🔒 Vos données sont traitées de manière confidentielle et ne seront jamais partagées avec des tiers.</p>
       </div>
@@ -1870,24 +1934,28 @@ section { padding: 6rem 3rem; }
       <h4>Lucie Dzongang</h4>
       <div class="org-role">Avocate — Barreaux Cameroun, Paris, New York</div>
       <div class="org-entity">Droit minier & gouvernance</div>
+      <a href="https://www.linkedin.com/in/lucie-dzongang/" target="_blank" rel="noopener" class="org-linkedin" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
     </div>
     <div class="org-card reveal">
       <img src="photos/hera-mpondo.jpg" alt="Héra Mpondo" class="org-avatar-photo">
       <h4>Héra Mpondo</h4>
       <div class="org-role">Fondateur & Directeur</div>
       <div class="org-entity">StratMined Advisory</div>
+      <a href="https://www.linkedin.com/in/h%C3%A9ra-mpondo/" target="_blank" rel="noopener" class="org-linkedin" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
     </div>
     <div class="org-card reveal">
       <img src="photos/armand-ngansop.jpg" alt="Dr. Armand Ngansop" class="org-avatar-photo">
       <h4>Dr. Armand Ngansop</h4>
       <div class="org-role">Directeur — Industrialisation</div>
       <div class="org-entity">CTID Consulting</div>
+      <a href="https://www.linkedin.com/in/armandngansop/" target="_blank" rel="noopener" class="org-linkedin" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
     </div>
     <div class="org-card reveal">
       <img src="photos/landry-djimpe.jpg" alt="Landry Djimpé" class="org-avatar-photo">
       <h4>Landry Djimpé</h4>
       <div class="org-role">Intelligence économique</div>
       <div class="org-entity">Innogence Consulting</div>
+      <a href="https://www.linkedin.com/in/landry-djimpe-4a645b26/" target="_blank" rel="noopener" class="org-linkedin" title="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
     </div>
   </div>
 </section>
@@ -1918,7 +1986,7 @@ section { padding: 6rem 3rem; }
     </div>
   </div>
   <div style="margin-top: 2.5rem;" class="reveal">
-    <a href="mailto:hera.mpondo@stratmined.com" class="btn-primary">Demander le dossier de sponsoring →</a>
+    <a href="#" class="btn-primary" onclick="openSponsorModal(); return false;">Demander le dossier de sponsoring →</a>
   </div>
 </section>
 
@@ -1950,9 +2018,7 @@ section { padding: 6rem 3rem; }
     </div>
     <div class="footer-col">
       <h5>Contact</h5>
-      <a href="mailto:hera.mpondo@stratmined.com">hera.mpondo@stratmined.com</a>
-      <a href="mailto:lucie.dzongang@gmail.com">lucie.dzongang@gmail.com</a>
-      <a href="mailto:landry.djimpe@innogenceconsulting.com">landry.djimpe@innogence.com</a>
+      <a href="mailto:contact@barazaminingforum.com">contact@barazaminingforum.com</a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -1966,15 +2032,17 @@ section { padding: 6rem 3rem; }
   <div class="modal">
     <button class="modal-close" onclick="closeModal()">×</button>
     <div class="check-icon">✓</div>
-    <h3>Accès Débloqué</h3>
-    <p>Merci pour votre inscription. Voici votre code d'accès au Dashboard interactif :</p>
+    <h3>Inscription Confirmée</h3>
+    <p id="successMessage">Merci pour votre inscription.</p>
     <div class="unlock-code-display">
       <div class="code" id="unlockCodeDisplay">---</div>
       <button class="btn-copy" id="btnCopyCode" onclick="copyUnlockCode()">📋 Copier le code</button>
       <div class="code-note">Conservez ce code — il vous sera demandé pour accéder au Dashboard</div>
     </div>
-    <a href="dashboard.html" class="btn-dashboard-link" target="_blank">Accéder au Dashboard →</a>
-    <br><br>
+    <div class="expiry-notice">Votre accès au Dashboard est valable pendant 30 jours à compter de cette inscription.</div>
+    <a href="dashboard.html" class="btn-dashboard-link" target="_blank">Accéder au Dashboard Cameroon Mining →</a>
+    <p style="font-size:0.78rem; color: var(--text-muted); margin-top:1rem; line-height:1.5;" id="successEmailNote">Un email de confirmation contenant votre code d'accès ainsi qu'un extrait du Cameroon Mining Playbook 2026 sera envoyé à votre adresse email.</p>
+    <br>
     <a href="#" style="font-size:0.8rem; color: var(--text-muted);" onclick="closeModal(); return false;">Fermer</a>
   </div>
 </div>
@@ -2011,12 +2079,12 @@ section { padding: 6rem 3rem; }
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label>Fonction</label>
-          <input type="text" name="fonction" placeholder="Directeur, Analyste...">
+          <label>Fonction *</label>
+          <input type="text" name="fonction" placeholder="Directeur, Analyste..." required>
         </div>
         <div class="form-group">
-          <label>Téléphone</label>
-          <input type="tel" name="telephone" placeholder="+237 6XX XXX XXX">
+          <label>Téléphone *</label>
+          <input type="tel" name="telephone" placeholder="+237 6XX XXX XXX" required>
         </div>
       </div>
       <div class="form-group">
@@ -2085,6 +2153,51 @@ section { padding: 6rem 3rem; }
   </div>
 </div>
 
+<!-- SPONSORING REQUEST MODAL -->
+<div class="modal-overlay sponsor-modal" id="sponsorModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeSponsorModal()">×</button>
+    <h3>Demande de Dossier de Sponsoring</h3>
+    <p class="form-sub">Remplissez le formulaire ci-dessous. Vous recevrez le dossier de sponsoring par email.</p>
+    <form id="sponsorForm" onsubmit="handleSponsorSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Prénom *</label>
+          <input type="text" name="prenom" placeholder="Jean" required>
+        </div>
+        <div class="form-group">
+          <label>Nom *</label>
+          <input type="text" name="nom" placeholder="Kamga" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email professionnel *</label>
+        <input type="email" name="email" placeholder="jean.kamga@company.com" required>
+      </div>
+      <div class="form-group">
+        <label>Société / Organisation *</label>
+        <input type="text" name="societe" placeholder="Votre entreprise ou institution" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Fonction *</label>
+          <input type="text" name="fonction" placeholder="Directeur, PDG..." required>
+        </div>
+        <div class="form-group">
+          <label>Téléphone *</label>
+          <input type="tel" name="telephone" placeholder="+237 6XX XXX XXX" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Pays de résidence *</label>
+        <input type="text" name="pays" placeholder="Cameroun, France, RDC..." required>
+      </div>
+      <button type="submit" class="btn-form">Envoyer ma demande →</button>
+    </form>
+    <p class="form-note">Le dossier de sponsoring vous sera envoyé par email sous 24h.</p>
+  </div>
+</div>
+
 <script>
 // ===== NAV SCROLL EFFECT =====
 const nav = document.getElementById('mainNav');
@@ -2119,56 +2232,179 @@ function generateUnlockCode() {
   return digits1 + '-' + letters + '-' + digits2;
 }
 
-// ===== GOOGLE SHEETS INTEGRATION =====
+// ===== GOOGLE SHEETS + EMAIL INTEGRATION =====
 /*
  * ===========================================================================
- * GOOGLE SHEETS SETUP INSTRUCTIONS
+ * GOOGLE SHEETS + EMAIL SETUP — contact@barazaminingforum.com
  * ===========================================================================
  *
- * 1. Create a Google Spreadsheet with two sheets:
- *    - Sheet 1: "Dashboard Access" (columns: Timestamp, Prénom, Nom, Email, Organisation, Fonction, Profil, Pays, Unlock Code)
- *    - Sheet 2: "Event Registration" (columns: Timestamp, Prénom, Nom, Email, Organisation, Fonction, Téléphone, Profil, Pays)
+ * STEP 1: Create a Google Spreadsheet with THREE sheets:
+ *   - "Dashboard Access"     → Timestamp | Prénom | Nom | Email | Organisation | Fonction | Profil | Pays | Unlock Code | Expiry Date
+ *   - "Event Registration"   → Timestamp | Prénom | Nom | Email | Organisation | Fonction | Téléphone | Profil | Pays
+ *   - "Sponsoring Requests"  → Timestamp | Prénom | Nom | Email | Société | Fonction | Téléphone | Pays
  *
- * 2. Go to Extensions > Apps Script and paste this code:
+ * STEP 2: Go to Extensions > Apps Script and paste the code below.
+ *         IMPORTANT: The script uses contact@barazaminingforum.com as sender.
+ *         This MUST be the Google account that owns the spreadsheet.
  *
- *    function doPost(e) {
- *      var lock = LockService.getScriptLock();
- *      lock.tryLock(10000);
+ * STEP 3: In the Apps Script project, add the Playbook PDF to Drive:
+ *   - Upload your Playbook excerpt PDF to Google Drive
+ *   - Copy the file ID (from the share URL)
+ *   - Replace PLAYBOOK_FILE_ID in the script with your file ID
  *
- *      try {
- *        var data = JSON.parse(e.postData.contents);
- *        var sheetName = data.formType === 'event' ? 'Event Registration' : 'Dashboard Access';
- *        var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+ * STEP 4: Deploy as Web App:
+ *   - Click Deploy > New Deployment > Web App
+ *   - Execute as: Me (contact@barazaminingforum.com)
+ *   - Who has access: Anyone
+ *   - Copy the deployment URL and paste it below
  *
- *        if (!sheet) {
- *          return ContentService.createTextOutput(JSON.stringify({status: 'error', message: 'Sheet not found'}))
- *            .setMimeType(ContentService.MimeType.JSON);
- *        }
+ * ===========================================================================
+ * APPS SCRIPT CODE (paste in Extensions > Apps Script):
+ * ===========================================================================
  *
- *        var row = [new Date().toISOString()];
- *        var fields = data.formType === 'event'
- *          ? ['prenom', 'nom', 'email', 'organisation', 'fonction', 'telephone', 'profil', 'pays']
- *          : ['prenom', 'nom', 'email', 'organisation', 'fonction', 'profil', 'pays', 'unlockCode'];
+ * var PLAYBOOK_FILE_ID = 'YOUR_PLAYBOOK_FILE_ID'; // Google Drive file ID
+ * var DASHBOARD_URL = 'https://stratmined.github.io/baraza-website/dashboard.html';
+ * var SENDER_NAME = 'Baraza Mining Forum';
  *
- *        fields.forEach(function(field) { row.push(data[field] || ''); });
- *        sheet.appendRow(row);
+ * function doPost(e) {
+ *   var lock = LockService.getScriptLock();
+ *   lock.tryLock(10000);
+ *   try {
+ *     var data = JSON.parse(e.postData.contents);
+ *     var formType = data.formType;
  *
- *        return ContentService.createTextOutput(JSON.stringify({status: 'success'}))
- *          .setMimeType(ContentService.MimeType.JSON);
- *      } catch(err) {
- *        return ContentService.createTextOutput(JSON.stringify({status: 'error', message: err.message}))
- *          .setMimeType(ContentService.MimeType.JSON);
- *      } finally {
- *        lock.releaseLock();
- *      }
- *    }
+ *     // Determine sheet and fields
+ *     var sheetName, fields;
+ *     if (formType === 'event' || formType === 'event-paid') {
+ *       sheetName = 'Event Registration';
+ *       fields = ['prenom','nom','email','organisation','fonction','telephone','profil','pays'];
+ *     } else if (formType === 'sponsor') {
+ *       sheetName = 'Sponsoring Requests';
+ *       fields = ['prenom','nom','email','societe','fonction','telephone','pays'];
+ *     } else {
+ *       sheetName = 'Dashboard Access';
+ *       fields = ['prenom','nom','email','organisation','fonction','profil','pays','unlockCode'];
+ *     }
  *
- * 3. Deploy as Web App:
+ *     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
+ *     if (!sheet) {
+ *       return ContentService.createTextOutput(JSON.stringify({status:'error',message:'Sheet not found'}))
+ *         .setMimeType(ContentService.MimeType.JSON);
+ *     }
+ *
+ *     // Build row
+ *     var row = [new Date().toISOString()];
+ *     fields.forEach(function(f) { row.push(data[f] || ''); });
+ *     if (formType === 'dashboard') {
+ *       // Add expiry date (30 days from now)
+ *       var expiry = new Date();
+ *       expiry.setDate(expiry.getDate() + 30);
+ *       row.push(expiry.toISOString().split('T')[0]);
+ *     }
+ *     sheet.appendRow(row);
+ *
+ *     // ===== SEND EMAILS =====
+ *
+ *     // Dashboard access — send code + playbook to participant
+ *     if (formType === 'dashboard' && data.email && data.unlockCode) {
+ *       var attachments = [];
+ *       try {
+ *         var playbookFile = DriveApp.getFileById(PLAYBOOK_FILE_ID);
+ *         attachments.push(playbookFile.getAs(MimeType.PDF));
+ *       } catch(err) { /* File not found — skip attachment */ }
+ *
+ *       MailApp.sendEmail({
+ *         to: data.email,
+ *         subject: 'Votre accès au Dashboard — Baraza Mining Forum 2026',
+ *         name: SENDER_NAME,
+ *         htmlBody: '<div style="font-family:DM Sans,Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto">' +
+ *           '<div style="background:#1B2A4A;padding:24px;text-align:center">' +
+ *             '<h1 style="color:#C8963E;font-size:28px;margin:0">BARAZA</h1>' +
+ *             '<p style="color:#94A3B8;font-size:12px;letter-spacing:3px;margin:4px 0 0">MINING FORUM</p>' +
+ *           '</div>' +
+ *           '<div style="background:#FAF6F0;padding:32px;color:#1A1A1A">' +
+ *             '<h2 style="color:#1B2A4A;margin:0 0 16px">' + (data.prenom || '') + ', merci pour votre inscription !</h2>' +
+ *             '<p style="line-height:1.6">Nous nous réjouissons de vous compter parmi les participants à l\'édition 2026 du Baraza Mining Forum — Les Rencontres Africaines de l\'Industrie Minière Responsable.</p>' +
+ *             '<p style="line-height:1.6">Veuillez trouver ci-après le lien vers le <strong>Tableau de bord interactif Cameroon Mining Sector</strong>. Votre mot de passe pour débloquer votre accès est :</p>' +
+ *             '<div style="background:#1B2A4A;padding:20px;border-radius:8px;text-align:center;margin:20px 0">' +
+ *               '<p style="color:#94A3B8;font-size:12px;margin:0 0 8px">VOTRE CODE D\'ACCÈS</p>' +
+ *               '<p style="color:#C8963E;font-size:24px;font-family:monospace;font-weight:bold;letter-spacing:3px;margin:0">' + data.unlockCode + '</p>' +
+ *               '<p style="color:#94A3B8;font-size:11px;margin:8px 0 0">Valable 30 jours</p>' +
+ *             '</div>' +
+ *             '<p style="text-align:center;margin:20px 0">' +
+ *               '<a href="' + DASHBOARD_URL + '" style="background:#C8963E;color:#1B2A4A;padding:14px 28px;text-decoration:none;border-radius:6px;font-weight:bold;display:inline-block">Accéder au Dashboard →</a>' +
+ *             '</p>' +
+ *             '<p style="line-height:1.6">Vous trouverez également en pièce jointe un extrait de notre <strong>Cameroon Mining Playbook 2026</strong>, le guide stratégique de référence destiné aux investisseurs et décideurs du secteur minier camerounais.</p>' +
+ *             '<hr style="border:none;border-top:1px solid #E5E7EB;margin:24px 0">' +
+ *             '<p style="font-size:13px;color:#6B7280">Baraza Mining Forum — Yaoundé, 26 Mai 2026<br>contact@barazaminingforum.com</p>' +
+ *           '</div>' +
+ *         '</div>',
+ *         attachments: attachments
+ *       });
+ *     }
+ *
+ *     // Sponsoring request — send notification to contact@barazaminingforum.com
+ *     if (formType === 'sponsor') {
+ *       MailApp.sendEmail({
+ *         to: 'contact@barazaminingforum.com',
+ *         subject: 'Demande Dossier de Sponsoring — ' + (data.prenom || '') + ' ' + (data.nom || '') + ' (' + (data.societe || '') + ')',
+ *         name: SENDER_NAME,
+ *         htmlBody: '<h2>Nouvelle demande de dossier de sponsoring</h2>' +
+ *           '<table style="border-collapse:collapse;font-family:sans-serif">' +
+ *           '<tr><td style="padding:6px 12px;font-weight:bold">Prénom:</td><td style="padding:6px 12px">' + (data.prenom || '') + '</td></tr>' +
+ *           '<tr><td style="padding:6px 12px;font-weight:bold">Nom:</td><td style="padding:6px 12px">' + (data.nom || '') + '</td></tr>' +
+ *           '<tr><td style="padding:6px 12px;font-weight:bold">Email:</td><td style="padding:6px 12px">' + (data.email || '') + '</td></tr>' +
+ *           '<tr><td style="padding:6px 12px;font-weight:bold">Société:</td><td style="padding:6px 12px">' + (data.societe || '') + '</td></tr>' +
+ *           '<tr><td style="padding:6px 12px;font-weight:bold">Fonction:</td><td style="padding:6px 12px">' + (data.fonction || '') + '</td></tr>' +
+ *           '<tr><td style="padding:6px 12px;font-weight:bold">Téléphone:</td><td style="padding:6px 12px">' + (data.telephone || '') + '</td></tr>' +
+ *           '<tr><td style="padding:6px 12px;font-weight:bold">Pays:</td><td style="padding:6px 12px">' + (data.pays || '') + '</td></tr>' +
+ *           '</table>' +
+ *           '<hr>' +
+ *           '<p style="color:#666">Message automatique depuis le formulaire Baraza Mining Forum.</p>'
+ *       });
+ *
+ *       // Send confirmation to the requester
+ *       MailApp.sendEmail({
+ *         to: data.email,
+ *         subject: 'Demande Dossier de Sponsoring — Baraza Mining Forum 2026',
+ *         name: SENDER_NAME,
+ *         htmlBody: '<div style="font-family:DM Sans,Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto">' +
+ *           '<div style="background:#1B2A4A;padding:24px;text-align:center">' +
+ *             '<h1 style="color:#C8963E;font-size:28px;margin:0">BARAZA</h1>' +
+ *             '<p style="color:#94A3B8;font-size:12px;letter-spacing:3px;margin:4px 0 0">MINING FORUM</p>' +
+ *           '</div>' +
+ *           '<div style="background:#FAF6F0;padding:32px;color:#1A1A1A">' +
+ *             '<h2 style="color:#1B2A4A">' + (data.prenom || '') + ', merci pour votre intérêt !</h2>' +
+ *             '<p style="line-height:1.6">Nous avons bien reçu votre demande de dossier de sponsoring pour le Baraza Mining Forum 2026 — Les Rencontres Africaines de l\'Industrie Minière Responsable.</p>' +
+ *             '<p style="line-height:1.6">Notre équipe vous fera parvenir le dossier complet dans les meilleurs délais à l\'adresse <strong>' + (data.email || '') + '</strong>.</p>' +
+ *             '<p style="line-height:1.6">Pour toute question, n\'hésitez pas à nous contacter à <a href="mailto:contact@barazaminingforum.com">contact@barazaminingforum.com</a>.</p>' +
+ *             '<hr style="border:none;border-top:1px solid #E5E7EB;margin:24px 0">' +
+ *             '<p style="font-size:13px;color:#6B7280">Baraza Mining Forum — Yaoundé, 26 Mai 2026</p>' +
+ *           '</div>' +
+ *         '</div>'
+ *       });
+ *     }
+ *
+ *     return ContentService.createTextOutput(JSON.stringify({status:'success'}))
+ *       .setMimeType(ContentService.MimeType.JSON);
+ *   } catch(err) {
+ *     return ContentService.createTextOutput(JSON.stringify({status:'error',message:err.message}))
+ *       .setMimeType(ContentService.MimeType.JSON);
+ *   } finally {
+ *     lock.releaseLock();
+ *   }
+ * }
+ *
+ * ===========================================================================
+ * DEPLOYMENT:
+ * 1. Log into Google as contact@barazaminingforum.com
+ * 2. Create the Spreadsheet with 3 sheets (names above)
+ * 3. Extensions > Apps Script > paste code > Save
+ * 4. Deploy > New Deployment > Web App
  *    - Execute as: Me
- *    - Who has access: Anyone
- *    - Copy the deployment URL
- *
- * 4. Replace the placeholder URL below with your deployment URL:
+ *    - Access: Anyone
+ * 5. Copy the URL and paste it below
+ * ===========================================================================
  */
 var GOOGLE_SHEETS_ENDPOINT = ''; // Paste your Apps Script Web App URL here
 
@@ -2203,6 +2439,14 @@ function handleDashboardSubmit(e) {
 
   // Display the code in the modal
   document.getElementById('unlockCodeDisplay').textContent = code;
+
+  // Personalized confirmation message
+  var prenom = formData.prenom || '';
+  document.getElementById('successMessage').innerHTML =
+    '<strong>' + prenom + '</strong>, merci pour votre inscription à l\'édition 2026 du Baraza Mining Forum ! ' +
+    'Nous nous réjouissons de vous compter parmi nos participants. ' +
+    'Veuillez trouver ci-dessous le lien vers le <em>Tableau de bord Cameroon Mining Sector</em>. ' +
+    'Votre mot de passe pour débloquer votre accès est :';
 
   // Submit to Google Sheets (silent — works when endpoint is configured)
   submitToGoogleSheets(formData, 'dashboard');
@@ -2408,19 +2652,69 @@ function launchCinetPayCheckout(formData) {
   });
 }
 
-// Close event modal on overlay click
+// ===== SPONSORING MODAL =====
+function openSponsorModal() {
+  document.getElementById('sponsorModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSponsorModal() {
+  document.getElementById('sponsorModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function handleSponsorSubmit(e) {
+  e.preventDefault();
+  var form = e.target;
+  var formData = {};
+  new FormData(form).forEach(function(value, key) { formData[key] = value; });
+
+  // Submit to Google Sheets (logs the request + triggers email via Apps Script)
+  submitToGoogleSheets(formData, 'sponsor');
+
+  // Close modal and show confirmation
+  closeSponsorModal();
+  form.reset();
+
+  // Fallback: if Google Sheets is not configured, open mailto
+  if (!GOOGLE_SHEETS_ENDPOINT) {
+    var subject = encodeURIComponent('Demande Dossier de Sponsoring — Baraza Mining Forum 2026');
+    var body = encodeURIComponent(
+      'Bonjour,\n\n' +
+      'Je souhaiterais recevoir le dossier de sponsoring pour le Baraza Mining Forum 2026.\n\n' +
+      'Mes coordonnées :\n' +
+      '- Prénom : ' + formData.prenom + '\n' +
+      '- Nom : ' + formData.nom + '\n' +
+      '- Email : ' + formData.email + '\n' +
+      '- Société : ' + formData.societe + '\n' +
+      '- Fonction : ' + formData.fonction + '\n' +
+      '- Téléphone : ' + formData.telephone + '\n' +
+      '- Pays : ' + formData.pays + '\n\n' +
+      'Merci de me faire parvenir le dossier de sponsoring ainsi que les conditions de partenariat.\n\n' +
+      'Cordialement,\n' +
+      formData.prenom + ' ' + formData.nom
+    );
+    window.location.href = 'mailto:contact@barazaminingforum.com?subject=' + subject + '&body=' + body;
+  } else {
+    alert('Merci ' + formData.prenom + ' ! Votre demande de dossier de sponsoring a été envoyée. Vous recevrez le dossier par email sous 24h.');
+  }
+}
+
+// Close modals on overlay click
 document.getElementById('eventModal').addEventListener('click', function(e) {
   if (e.target === this) closeEventModal();
 });
 
-// Close event confirm modal on overlay click
 document.getElementById('eventConfirmModal').addEventListener('click', function(e) {
   if (e.target === this) closeEventConfirmModal();
 });
 
-// Close success modal on overlay click
 document.getElementById('successModal').addEventListener('click', function(e) {
   if (e.target === this) closeModal();
+});
+
+document.getElementById('sponsorModal').addEventListener('click', function(e) {
+  if (e.target === this) closeSponsorModal();
 });
 
 // ===== HAMBURGER MENU =====
@@ -2503,35 +2797,14 @@ document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
 })();
 
 /*
- * ===========================================================================
- * EMAIL INTEGRATION (FUTURE)
- * ===========================================================================
+ * EMAIL: All emails are sent via the Google Apps Script (server-side).
+ * Sender: contact@barazaminingforum.com
+ * See the Apps Script code above for the full email templates.
  *
- * To send the unlock code by email, you can use one of these approaches:
- *
- * Option A: EmailJS (client-side)
- *   1. Sign up at https://www.emailjs.com
- *   2. Create a template with variables: {{to_email}}, {{to_name}}, {{unlock_code}}
- *   3. Add this to handleDashboardSubmit after generating the code:
- *
- *   emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
- *     to_email: formData.email,
- *     to_name: formData.prenom,
- *     unlock_code: code
- *   });
- *
- * Option B: Google Apps Script (server-side, add to the doPost function):
- *
- *   if (data.formType === 'dashboard' && data.email) {
- *     MailApp.sendEmail({
- *       to: data.email,
- *       subject: 'Votre code d\'accès — Baraza Mining Forum Dashboard',
- *       htmlBody: '<h2>Bienvenue ' + data.prenom + '</h2>' +
- *         '<p>Votre code d\'accès au Dashboard interactif :</p>' +
- *         '<h1 style="color:#C8963E;font-family:monospace">' + data.unlockCode + '</h1>' +
- *         '<p><a href="https://stratmined.github.io/baraza-website/dashboard.html">Accéder au Dashboard</a></p>'
- *     });
- *   }
+ * Emails sent automatically:
+ * 1. Dashboard access code + Playbook PDF → to participant
+ * 2. Sponsoring request notification → to contact@barazaminingforum.com
+ * 3. Sponsoring confirmation → to requester
  */
 </script>
 </body>

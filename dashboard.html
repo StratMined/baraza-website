@@ -666,6 +666,24 @@ function unlockDashboard() {
   var gate = document.getElementById('gateOverlay');
   var content = document.getElementById('dashboardContent');
 
+  // Store access timestamp for 30-day expiry
+  var code = document.getElementById('gateCodeInput').value.trim().toUpperCase();
+  var stored = JSON.parse(localStorage.getItem('baraza_dashboard_access') || '{}');
+  if (!stored[code]) {
+    stored[code] = { firstAccess: new Date().toISOString() };
+    localStorage.setItem('baraza_dashboard_access', JSON.stringify(stored));
+  } else {
+    // Check 30-day expiry
+    var firstAccess = new Date(stored[code].firstAccess);
+    var now = new Date();
+    var daysDiff = Math.floor((now - firstAccess) / (1000 * 60 * 60 * 24));
+    if (daysDiff > 30) {
+      document.getElementById('gateError').textContent = 'Votre accès a expiré (30 jours). Veuillez vous réinscrire sur le site du forum.';
+      document.getElementById('gateError').classList.add('visible');
+      return;
+    }
+  }
+
   // Fade out gate
   gate.classList.add('hidden');
 
