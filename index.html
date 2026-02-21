@@ -483,6 +483,7 @@ section {
   padding: 6rem 3rem;
   position: relative;
   z-index: 1;           /* Keep all sections below nav (z-index: 1000) */
+  isolation: isolate;   /* Prevent child elements from escaping stacking context */
 }
 
 .section-label {
@@ -599,6 +600,9 @@ section {
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
   padding: 3rem;
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
 }
 
 .stats-inner {
@@ -1021,7 +1025,8 @@ section {
   padding: 4rem 3rem 2rem;
   border-top: 1px solid var(--border-subtle);
   position: relative;
-  z-index: 1;           /* Keep footer below nav (z-index: 1000) */
+  z-index: 1;
+  isolation: isolate;
 }
 
 .footer-inner {
