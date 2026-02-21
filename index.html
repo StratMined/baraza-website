@@ -52,10 +52,11 @@ body {
 }
 
 .nav.scrolled {
-  background: rgba(26,26,26,0.95);
+  background: rgba(26,26,26,0.98);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   padding: 0.7rem 3rem;
-  box-shadow: 0 2px 30px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 30px rgba(0,0,0,0.5);
 }
 
 .nav-logo {
@@ -480,7 +481,11 @@ body {
 }
 
 /* ===== SECTION COMMON ===== */
-section { padding: 6rem 3rem; }
+section {
+  padding: 6rem 3rem;
+  position: relative;
+  z-index: 1;           /* Keep all sections below nav (z-index: 1000) */
+}
 
 .section-label {
   font-family: 'Space Mono', monospace;
@@ -1017,6 +1022,8 @@ section { padding: 6rem 3rem; }
   background: var(--earth);
   padding: 4rem 3rem 2rem;
   border-top: 1px solid var(--border-subtle);
+  position: relative;
+  z-index: 1;           /* Keep footer below nav (z-index: 1000) */
 }
 
 .footer-inner {
@@ -2021,10 +2028,10 @@ section { padding: 6rem 3rem; }
     </div>
     <div class="footer-col">
       <h5>Ressources</h5>
-      <a href="#">Code Minier 2023</a>
-      <a href="#">Rapports ITIE</a>
-      <a href="#">Vision Minière Africaine</a>
-      <a href="#">Cadre AMGF</a>
+      <a href="https://www.minmidt.cm/wp-content/uploads/2018/01/Loi-N%C2%B02023-014-du-19-decembre-2023-portant-Code-Minier.pdf" target="_blank" rel="noopener">Code Minier 2023</a>
+      <a href="https://eiticameroon.org/" target="_blank" rel="noopener">ITIE Cameroun</a>
+      <a href="https://au.int/en/amv" target="_blank" rel="noopener">Vision Minière Africaine</a>
+      <a href="https://archive.uneca.org/publications/africa-mining-vision-african-minerals-governance-framework" target="_blank" rel="noopener">Cadre AMGF</a>
     </div>
     <div class="footer-col">
       <h5>Contact</h5>
