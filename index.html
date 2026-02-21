@@ -2271,179 +2271,9 @@ function generateUnlockCode() {
 }
 
 // ===== GOOGLE SHEETS + EMAIL INTEGRATION =====
-/*
- * ===========================================================================
- * GOOGLE SHEETS + EMAIL SETUP — contact@barazaminingforum.com
- * ===========================================================================
- *
- * STEP 1: Create a Google Spreadsheet with THREE sheets:
- *   - "Dashboard Access"     → Timestamp | Prénom | Nom | Email | Organisation | Fonction | Profil | Pays | Unlock Code | Expiry Date
- *   - "Event Registration"   → Timestamp | Prénom | Nom | Email | Organisation | Fonction | Téléphone | Profil | Pays
- *   - "Sponsoring Requests"  → Timestamp | Prénom | Nom | Email | Société | Fonction | Téléphone | Pays
- *
- * STEP 2: Go to Extensions > Apps Script and paste the code below.
- *         IMPORTANT: The script uses contact@barazaminingforum.com as sender.
- *         This MUST be the Google account that owns the spreadsheet.
- *
- * STEP 3: In the Apps Script project, add the Playbook PDF to Drive:
- *   - Upload your Playbook excerpt PDF to Google Drive
- *   - Copy the file ID (from the share URL)
- *   - Replace PLAYBOOK_FILE_ID in the script with your file ID
- *
- * STEP 4: Deploy as Web App:
- *   - Click Deploy > New Deployment > Web App
- *   - Execute as: Me (contact@barazaminingforum.com)
- *   - Who has access: Anyone
- *   - Copy the deployment URL and paste it below
- *
- * ===========================================================================
- * APPS SCRIPT CODE (paste in Extensions > Apps Script):
- * ===========================================================================
- *
- * var PLAYBOOK_FILE_ID = 'YOUR_PLAYBOOK_FILE_ID'; // Google Drive file ID
- * var DASHBOARD_URL = 'https://stratmined.github.io/baraza-website/dashboard.html';
- * var SENDER_NAME = 'Baraza Mining Forum';
- *
- * function doPost(e) {
- *   var lock = LockService.getScriptLock();
- *   lock.tryLock(10000);
- *   try {
- *     var data = JSON.parse(e.postData.contents);
- *     var formType = data.formType;
- *
- *     // Determine sheet and fields
- *     var sheetName, fields;
- *     if (formType === 'event' || formType === 'event-paid') {
- *       sheetName = 'Event Registration';
- *       fields = ['prenom','nom','email','organisation','fonction','telephone','profil','pays'];
- *     } else if (formType === 'sponsor') {
- *       sheetName = 'Sponsoring Requests';
- *       fields = ['prenom','nom','email','societe','fonction','telephone','pays'];
- *     } else {
- *       sheetName = 'Dashboard Access';
- *       fields = ['prenom','nom','email','organisation','fonction','profil','pays','unlockCode'];
- *     }
- *
- *     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(sheetName);
- *     if (!sheet) {
- *       return ContentService.createTextOutput(JSON.stringify({status:'error',message:'Sheet not found'}))
- *         .setMimeType(ContentService.MimeType.JSON);
- *     }
- *
- *     // Build row
- *     var row = [new Date().toISOString()];
- *     fields.forEach(function(f) { row.push(data[f] || ''); });
- *     if (formType === 'dashboard') {
- *       // Add expiry date (30 days from now)
- *       var expiry = new Date();
- *       expiry.setDate(expiry.getDate() + 30);
- *       row.push(expiry.toISOString().split('T')[0]);
- *     }
- *     sheet.appendRow(row);
- *
- *     // ===== SEND EMAILS =====
- *
- *     // Dashboard access — send code + playbook to participant
- *     if (formType === 'dashboard' && data.email && data.unlockCode) {
- *       var attachments = [];
- *       try {
- *         var playbookFile = DriveApp.getFileById(PLAYBOOK_FILE_ID);
- *         attachments.push(playbookFile.getAs(MimeType.PDF));
- *       } catch(err) { // File not found -- skip attachment }
- *
- *       MailApp.sendEmail({
- *         to: data.email,
- *         subject: 'Votre accès au Dashboard — Baraza Mining Forum 2026',
- *         name: SENDER_NAME,
- *         htmlBody: '<div style="font-family:DM Sans,Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto">' +
- *           '<div style="background:#1B2A4A;padding:24px;text-align:center">' +
- *             '<h1 style="color:#C8963E;font-size:28px;margin:0">BARAZA</h1>' +
- *             '<p style="color:#94A3B8;font-size:12px;letter-spacing:3px;margin:4px 0 0">MINING FORUM</p>' +
- *           '</div>' +
- *           '<div style="background:#FAF6F0;padding:32px;color:#1A1A1A">' +
- *             '<h2 style="color:#1B2A4A;margin:0 0 16px">' + (data.prenom || '') + ', merci pour votre inscription !</h2>' +
- *             '<p style="line-height:1.6">Nous nous réjouissons de vous compter parmi les participants à l\'édition 2026 du Baraza Mining Forum — Les Rencontres Africaines de l\'Industrie Minière Responsable.</p>' +
- *             '<p style="line-height:1.6">Veuillez trouver ci-après le lien vers le <strong>Tableau de bord interactif Cameroon Mining Sector</strong>. Votre mot de passe pour débloquer votre accès est :</p>' +
- *             '<div style="background:#1B2A4A;padding:20px;border-radius:8px;text-align:center;margin:20px 0">' +
- *               '<p style="color:#94A3B8;font-size:12px;margin:0 0 8px">VOTRE CODE D\'ACCÈS</p>' +
- *               '<p style="color:#C8963E;font-size:24px;font-family:monospace;font-weight:bold;letter-spacing:3px;margin:0">' + data.unlockCode + '</p>' +
- *               '<p style="color:#94A3B8;font-size:11px;margin:8px 0 0">Valable 30 jours</p>' +
- *             '</div>' +
- *             '<p style="text-align:center;margin:20px 0">' +
- *               '<a href="' + DASHBOARD_URL + '" style="background:#C8963E;color:#1B2A4A;padding:14px 28px;text-decoration:none;border-radius:6px;font-weight:bold;display:inline-block">Accéder au Dashboard →</a>' +
- *             '</p>' +
- *             '<p style="line-height:1.6">Vous trouverez également en pièce jointe un extrait de notre <strong>Cameroon Mining Playbook 2026</strong>, le guide stratégique de référence destiné aux investisseurs et décideurs du secteur minier camerounais.</p>' +
- *             '<hr style="border:none;border-top:1px solid #E5E7EB;margin:24px 0">' +
- *             '<p style="font-size:13px;color:#6B7280">Baraza Mining Forum — Yaoundé, 26 Mai 2026<br>contact@barazaminingforum.com</p>' +
- *           '</div>' +
- *         '</div>',
- *         attachments: attachments
- *       });
- *     }
- *
- *     // Sponsoring request — send notification to contact@barazaminingforum.com
- *     if (formType === 'sponsor') {
- *       MailApp.sendEmail({
- *         to: 'contact@barazaminingforum.com',
- *         subject: 'Demande Dossier de Sponsoring — ' + (data.prenom || '') + ' ' + (data.nom || '') + ' (' + (data.societe || '') + ')',
- *         name: SENDER_NAME,
- *         htmlBody: '<h2>Nouvelle demande de dossier de sponsoring</h2>' +
- *           '<table style="border-collapse:collapse;font-family:sans-serif">' +
- *           '<tr><td style="padding:6px 12px;font-weight:bold">Prénom:</td><td style="padding:6px 12px">' + (data.prenom || '') + '</td></tr>' +
- *           '<tr><td style="padding:6px 12px;font-weight:bold">Nom:</td><td style="padding:6px 12px">' + (data.nom || '') + '</td></tr>' +
- *           '<tr><td style="padding:6px 12px;font-weight:bold">Email:</td><td style="padding:6px 12px">' + (data.email || '') + '</td></tr>' +
- *           '<tr><td style="padding:6px 12px;font-weight:bold">Société:</td><td style="padding:6px 12px">' + (data.societe || '') + '</td></tr>' +
- *           '<tr><td style="padding:6px 12px;font-weight:bold">Fonction:</td><td style="padding:6px 12px">' + (data.fonction || '') + '</td></tr>' +
- *           '<tr><td style="padding:6px 12px;font-weight:bold">Téléphone:</td><td style="padding:6px 12px">' + (data.telephone || '') + '</td></tr>' +
- *           '<tr><td style="padding:6px 12px;font-weight:bold">Pays:</td><td style="padding:6px 12px">' + (data.pays || '') + '</td></tr>' +
- *           '</table>' +
- *           '<hr>' +
- *           '<p style="color:#666">Message automatique depuis le formulaire Baraza Mining Forum.</p>'
- *       });
- *
- *       // Send confirmation to the requester
- *       MailApp.sendEmail({
- *         to: data.email,
- *         subject: 'Demande Dossier de Sponsoring — Baraza Mining Forum 2026',
- *         name: SENDER_NAME,
- *         htmlBody: '<div style="font-family:DM Sans,Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto">' +
- *           '<div style="background:#1B2A4A;padding:24px;text-align:center">' +
- *             '<h1 style="color:#C8963E;font-size:28px;margin:0">BARAZA</h1>' +
- *             '<p style="color:#94A3B8;font-size:12px;letter-spacing:3px;margin:4px 0 0">MINING FORUM</p>' +
- *           '</div>' +
- *           '<div style="background:#FAF6F0;padding:32px;color:#1A1A1A">' +
- *             '<h2 style="color:#1B2A4A">' + (data.prenom || '') + ', merci pour votre intérêt !</h2>' +
- *             '<p style="line-height:1.6">Nous avons bien reçu votre demande de dossier de sponsoring pour le Baraza Mining Forum 2026 — Les Rencontres Africaines de l\'Industrie Minière Responsable.</p>' +
- *             '<p style="line-height:1.6">Notre équipe vous fera parvenir le dossier complet dans les meilleurs délais à l\'adresse <strong>' + (data.email || '') + '</strong>.</p>' +
- *             '<p style="line-height:1.6">Pour toute question, n\'hésitez pas à nous contacter à <a href="mailto:contact@barazaminingforum.com">contact@barazaminingforum.com</a>.</p>' +
- *             '<hr style="border:none;border-top:1px solid #E5E7EB;margin:24px 0">' +
- *             '<p style="font-size:13px;color:#6B7280">Baraza Mining Forum — Yaoundé, 26 Mai 2026</p>' +
- *           '</div>' +
- *         '</div>'
- *       });
- *     }
- *
- *     return ContentService.createTextOutput(JSON.stringify({status:'success'}))
- *       .setMimeType(ContentService.MimeType.JSON);
- *   } catch(err) {
- *     return ContentService.createTextOutput(JSON.stringify({status:'error',message:err.message}))
- *       .setMimeType(ContentService.MimeType.JSON);
- *   } finally {
- *     lock.releaseLock();
- *   }
- * }
- *
- * ===========================================================================
- * DEPLOYMENT:
- * 1. Log into Google as contact@barazaminingforum.com
- * 2. Create the Spreadsheet with 3 sheets (names above)
- * 3. Extensions > Apps Script > paste code > Save
- * 4. Deploy > New Deployment > Web App
- *    - Execute as: Me
- *    - Access: Anyone
- * 5. Copy the URL and paste it below
- * ===========================================================================
- */
+// Apps Script code provided separately — reads e.parameter (URL-encoded POST).
+// Spreadsheet: 3 sheets — "Dashboard Access", "Event Registration", "Sponsoring Requests"
+// Sends branded emails from contact@barazaminingforum.com with Playbook PDF attachment.
 var GOOGLE_SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxz1COYDEPN3WKFysQSUt31eM6PgmvI-1M4PM8KR-qIHmB3UUitFEVM02-WtXC9mNnX/exec';
 
 function submitToGoogleSheets(formData, formType) {
@@ -2451,16 +2281,22 @@ function submitToGoogleSheets(formData, formType) {
     console.log('[Baraza] Google Sheets endpoint not configured. Form data:', formType, formData);
     return;
   }
+  // Build URL-encoded body (compatible with no-cors mode)
   var payload = Object.assign({}, formData, { formType: formType });
+  var params = new URLSearchParams();
+  Object.keys(payload).forEach(function(key) {
+    params.append(key, payload[key]);
+  });
+
   fetch(GOOGLE_SHEETS_ENDPOINT, {
     method: 'POST',
     mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: params.toString()
   }).then(function() {
     console.log('[Baraza] Data sent to Google Sheets:', formType);
   }).catch(function(err) {
-    console.warn('[Baraza] Google Sheets submission failed (silent):', err.message);
+    console.warn('[Baraza] Google Sheets submission failed:', err.message);
   });
 }
 
