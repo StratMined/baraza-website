@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Baraza Mining Forum — Les Rencontres Africaines de l'Industrie Minière Responsable</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<!-- CinetPay Seamless SDK — Payment gateway for mobile money & cards -->
+<script src="https://cdn.cinetpay.com/seamless/main.js" type="text/javascript"></script>
 <style>
 :root {
   --gold: #C8963E;
@@ -1451,6 +1453,88 @@ section { padding: 6rem 3rem; }
   margin-bottom: 1.5rem;
   line-height: 1.5;
 }
+
+/* ===== PAYMENT INFO BAR ===== */
+.payment-info {
+  background: rgba(10,110,92,0.1);
+  border: 1px solid rgba(10,110,92,0.25);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.payment-info .pay-icon { font-size: 1.2rem; }
+
+.payment-info .pay-text {
+  font-size: 0.8rem;
+  color: var(--ivory);
+  line-height: 1.4;
+}
+
+.payment-info .pay-text strong {
+  color: var(--teal-light);
+}
+
+.payment-methods-icons {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.payment-methods-icons .pm {
+  background: rgba(200,150,62,0.08);
+  border: 1px solid rgba(200,150,62,0.15);
+  border-radius: 4px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.65rem;
+  font-family: 'Space Mono', monospace;
+  color: var(--gold-light);
+  letter-spacing: 0.05em;
+}
+
+/* ===== EVENT CONFIRMATION MODAL ===== */
+.event-confirm-modal .modal {
+  max-width: 480px;
+  text-align: center;
+}
+
+.confirm-details {
+  background: rgba(26,26,26,0.6);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  text-align: left;
+}
+
+.confirm-details .detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.35rem 0;
+  font-size: 0.82rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.confirm-details .detail-row:last-child { border-bottom: none; }
+
+.confirm-details .detail-label {
+  color: var(--text-muted);
+}
+
+.confirm-details .detail-value {
+  color: var(--ivory);
+  font-weight: 600;
+}
+
+.confirm-details .detail-value.highlight {
+  color: var(--teal-light);
+  font-family: 'Space Mono', monospace;
+}
 </style>
 </head>
 <body>
@@ -1901,6 +1985,11 @@ section { padding: 6rem 3rem; }
     <button class="modal-close" onclick="closeEventModal()">×</button>
     <h3>Inscription — Baraza Mining Forum 2026</h3>
     <p class="form-sub">Yaoundé, Cameroun — 26 Mai 2026</p>
+    <!-- Payment info banner — currently showing FREE, switches to paid when configured -->
+    <div class="payment-info">
+      <div class="pay-icon">✓</div>
+      <div class="pay-text"><strong>Inscription gratuite</strong> — Places limitées. Réservez dès maintenant.</div>
+    </div>
     <form id="eventRegistrationForm" onsubmit="handleEventSubmit(event)">
       <div class="form-row">
         <div class="form-group">
@@ -1949,9 +2038,50 @@ section { padding: 6rem 3rem; }
         <label>Pays *</label>
         <input type="text" name="pays" placeholder="Cameroun, France, RDC..." required>
       </div>
-      <button type="submit" class="btn-form">S'inscrire & Réserver ma place →</button>
+      <button type="submit" class="btn-form" id="eventSubmitBtn">S'inscrire — Gratuit →</button>
     </form>
-    <p class="form-note">🔒 Inscription gratuite. Vous serez redirigé vers Eventbrite pour confirmer votre place.</p>
+    <div class="payment-methods-icons">
+      <span class="pm">MTN MoMo</span>
+      <span class="pm">Orange Money</span>
+      <span class="pm">Visa</span>
+      <span class="pm">Mastercard</span>
+    </div>
+    <p class="form-note">🔒 Paiement sécurisé par CinetPay. Vos données sont protégées.</p>
+  </div>
+</div>
+
+<!-- EVENT CONFIRMATION MODAL -->
+<div class="modal-overlay event-confirm-modal" id="eventConfirmModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeEventConfirmModal()">×</button>
+    <div class="check-icon">✓</div>
+    <h3>Inscription Confirmée</h3>
+    <p>Votre place au Baraza Mining Forum 2026 est réservée.</p>
+    <div class="confirm-details">
+      <div class="detail-row">
+        <span class="detail-label">Participant</span>
+        <span class="detail-value" id="confirmName">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Organisation</span>
+        <span class="detail-value" id="confirmOrg">—</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Date</span>
+        <span class="detail-value">26 Mai 2026</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Lieu</span>
+        <span class="detail-value">Yaoundé, Cameroun</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Statut</span>
+        <span class="detail-value highlight" id="confirmStatus">CONFIRMÉ</span>
+      </div>
+    </div>
+    <p style="font-size:0.8rem; color: var(--text-muted); margin-top:0.5rem;">Un email de confirmation sera envoyé à <strong id="confirmEmail">—</strong></p>
+    <br>
+    <a href="#" class="btn-primary" onclick="closeEventConfirmModal(); return false;">Fermer</a>
   </div>
 </div>
 
@@ -2115,15 +2245,85 @@ function closeModal() {
   document.getElementById('successModal').classList.remove('active');
 }
 
+// ===== CINETPAY CONFIGURATION =====
+/*
+ * ===========================================================================
+ * CINETPAY SETUP INSTRUCTIONS
+ * ===========================================================================
+ *
+ * 1. Create a CinetPay merchant account at https://cinetpay.com
+ *    - Sign up as a Business
+ *    - Complete KYC verification
+ *    - Get your API Key and Site ID from the dashboard
+ *
+ * 2. Replace the placeholders below with your credentials:
+ *    - CINETPAY_API_KEY: Found in Dashboard > Integration > API Key
+ *    - CINETPAY_SITE_ID: Found in Dashboard > Integration > Site ID
+ *
+ * 3. Set PAYMENT_ENABLED to true and define TICKET_PRICE when ready
+ *
+ * 4. For webhook notifications (server-side verification):
+ *    - Set notify_url to a webhook endpoint (e.g., Google Apps Script or Cloudflare Worker)
+ *    - Or manually verify payments in your CinetPay dashboard
+ *
+ * 5. For payouts to Revolut Business:
+ *    - In CinetPay Dashboard > Settings > Bank Account
+ *    - Add your Revolut Business EUR IBAN and SWIFT/BIC
+ *    - Request withdrawals from your merchant balance
+ *    - XAF converts to EUR at the fixed peg rate (1 EUR = 655.957 XAF)
+ *    - Funds arrive via SWIFT in 3-5 business days
+ *
+ * 6. Supported payment methods in Cameroon:
+ *    - MTN Mobile Money (MoMo)
+ *    - Orange Money
+ *    - Visa / Mastercard
+ */
+
+var CINETPAY_CONFIG = {
+  apikey: '',       // YOUR_API_KEY — get from https://cinetpay.com dashboard
+  site_id: '',      // YOUR_SITE_ID — get from https://cinetpay.com dashboard
+  notify_url: '',   // Optional: webhook URL for server-side payment verification
+  mode: 'PRODUCTION'
+};
+
+// PAYMENT SETTINGS — Change these when you're ready to charge
+var PAYMENT_ENABLED = false;     // Set to true to activate paid registration
+var TICKET_PRICE = 0;            // Price in XAF (e.g., 150000 for 150,000 XAF)
+var TICKET_CURRENCY = 'XAF';    // CFA Franc BEAC
+var TICKET_DESCRIPTION = 'Baraza Mining Forum 2026 — Inscription';
+
 // ===== EVENT REGISTRATION MODAL =====
 function openEventModal() {
   document.getElementById('eventModal').classList.add('active');
   document.body.style.overflow = 'hidden';
+
+  // Update UI based on payment mode
+  var submitBtn = document.getElementById('eventSubmitBtn');
+  var payInfo = document.querySelector('.payment-info');
+  if (PAYMENT_ENABLED && TICKET_PRICE > 0) {
+    var priceFormatted = TICKET_PRICE.toLocaleString('fr-FR') + ' ' + TICKET_CURRENCY;
+    submitBtn.textContent = 'S\'inscrire & Payer — ' + priceFormatted + ' →';
+    payInfo.innerHTML = '<div class="pay-icon">💳</div>' +
+      '<div class="pay-text">Inscription : <strong>' + priceFormatted + '</strong><br>' +
+      'Paiement sécurisé par Mobile Money ou carte bancaire.</div>';
+  }
 }
 
 function closeEventModal() {
   document.getElementById('eventModal').classList.remove('active');
   document.body.style.overflow = '';
+}
+
+function closeEventConfirmModal() {
+  document.getElementById('eventConfirmModal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function showEventConfirmation(formData) {
+  document.getElementById('confirmName').textContent = formData.prenom + ' ' + formData.nom;
+  document.getElementById('confirmOrg').textContent = formData.organisation;
+  document.getElementById('confirmEmail').textContent = formData.email;
+  document.getElementById('eventConfirmModal').classList.add('active');
 }
 
 function handleEventSubmit(e) {
@@ -2132,21 +2332,90 @@ function handleEventSubmit(e) {
   var formData = {};
   new FormData(form).forEach(function(value, key) { formData[key] = value; });
 
-  // Submit to Google Sheets
+  // Submit to Google Sheets (always — captures registration data)
   submitToGoogleSheets(formData, 'event');
 
-  // Close modal
-  closeEventModal();
+  // Check if payment is enabled
+  if (PAYMENT_ENABLED && TICKET_PRICE > 0 && CINETPAY_CONFIG.apikey) {
+    // ---- PAID REGISTRATION: Launch CinetPay checkout ----
+    closeEventModal();
+    launchCinetPayCheckout(formData);
+  } else {
+    // ---- FREE REGISTRATION: Show confirmation directly ----
+    closeEventModal();
+    showEventConfirmation(formData);
+    form.reset();
+  }
+}
 
-  // Redirect to Eventbrite (placeholder URL — replace when event page is created)
-  // TODO: Replace this placeholder with the actual Eventbrite event URL
-  var eventbriteURL = 'https://www.eventbrite.com/e/baraza-mining-forum-2026-placeholder';
-  window.open(eventbriteURL, '_blank');
+// ===== CINETPAY CHECKOUT =====
+function launchCinetPayCheckout(formData) {
+  var transactionId = 'BARAZA-' + Date.now() + '-' + Math.floor(Math.random() * 10000);
+
+  CinetPay.setConfig({
+    apikey: CINETPAY_CONFIG.apikey,
+    site_id: CINETPAY_CONFIG.site_id,
+    notify_url: CINETPAY_CONFIG.notify_url || '',
+    mode: CINETPAY_CONFIG.mode
+  });
+
+  CinetPay.getCheckout({
+    transaction_id: transactionId,
+    amount: TICKET_PRICE,
+    currency: TICKET_CURRENCY,
+    channels: 'ALL',
+    description: TICKET_DESCRIPTION,
+    customer_name: formData.nom,
+    customer_surname: formData.prenom,
+    customer_email: formData.email,
+    customer_phone_number: formData.telephone || '',
+    customer_address: formData.pays || 'Cameroun',
+    customer_city: 'Yaoundé',
+    customer_country: 'CM',
+    customer_state: 'CM',
+    customer_zip_code: '00000',
+
+    // Metadata for reconciliation
+    metadata: JSON.stringify({
+      organisation: formData.organisation,
+      profil: formData.profil,
+      fonction: formData.fonction || '',
+      event: 'Baraza Mining Forum 2026'
+    })
+  });
+
+  CinetPay.waitResponse(function(data) {
+    if (data.status === 'ACCEPTED') {
+      // Payment successful
+      formData.paymentStatus = 'PAID';
+      formData.transactionId = transactionId;
+      formData.amount = TICKET_PRICE + ' ' + TICKET_CURRENCY;
+
+      // Update Google Sheets with payment confirmation
+      submitToGoogleSheets(formData, 'event-paid');
+
+      // Show confirmation
+      document.getElementById('confirmStatus').textContent = 'PAYÉ — CONFIRMÉ';
+      showEventConfirmation(formData);
+    } else {
+      // Payment failed or cancelled
+      alert('Le paiement n\'a pas été finalisé. Votre inscription a été enregistrée.\n\nVous pouvez réessayer en cliquant sur "S\'INSCRIRE".');
+    }
+  });
+
+  CinetPay.onError(function(data) {
+    console.warn('[Baraza] CinetPay error:', data);
+  });
 }
 
 // Close event modal on overlay click
 document.getElementById('eventModal').addEventListener('click', function(e) {
   if (e.target === this) closeEventModal();
+});
+
+// Close event confirm modal on overlay click
+document.getElementById('eventConfirmModal').addEventListener('click', function(e) {
+  if (e.target === this) closeEventConfirmModal();
 });
 
 // Close success modal on overlay click
