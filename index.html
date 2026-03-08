@@ -798,6 +798,88 @@ section {
   font-size: 0.5rem;
 }
 
+.documents-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.doc-card {
+  background: linear-gradient(145deg, var(--slate), var(--earth-mid));
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 2rem;
+  position: relative;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+}
+
+.doc-card:hover {
+  border-color: rgba(200,150,62,0.3);
+  transform: translateY(-2px);
+}
+
+.doc-card .badge {
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background: var(--gold);
+  color: var(--earth);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.8rem;
+  border-radius: 4px;
+}
+
+.doc-card .doc-number {
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  background: rgba(200,150,62,0.15);
+  color: var(--gold);
+  font-family: 'Space Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 0.35rem 0.8rem;
+  border-radius: 4px;
+  border: 1px solid rgba(200,150,62,0.25);
+}
+
+.doc-card h3 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.doc-card .doc-author {
+  font-size: 0.75rem;
+  color: var(--gold-light);
+  font-style: italic;
+  margin-bottom: 0.8rem;
+  opacity: 0.8;
+}
+
+.doc-card .playbook-features {
+  margin-bottom: 1rem;
+}
+
+.doc-card .playbook-features li {
+  font-size: 0.82rem;
+  padding: 0.45rem 0;
+}
+
+.doc-card .doc-meta {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
 /* ===== LEAD FORM ===== */
 .form-container {
   background: linear-gradient(145deg, rgba(74,46,31,0.5), rgba(45,45,45,0.5));
@@ -1232,6 +1314,8 @@ section {
   .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
   .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; }
   .form-row { grid-template-columns: 1fr; }
+  .doc-card { padding: 1.5rem; }
+  .doc-card h3 { font-size: 1.1rem; }
   .sponsor-tiers { gap: 1rem; }
   .tier-card { min-width: unset; width: 100%; }
 }
@@ -1851,23 +1935,40 @@ section {
   <div class="playbook-inner">
     <div>
       <div class="section-label reveal">Contenu Exclusif</div>
-      <h2 class="section-title reveal">Cameroon Mining<br>Playbook 2026</h2>
+      <h2 class="section-title reveal">Ressources Stratégiques<br>Exclusives</h2>
       <div class="gold-line reveal"></div>
-      <div class="playbook-preview reveal">
-        <div class="badge">EXCLUSIF</div>
-        <h3>Le guide stratégique de référence</h3>
-        <ul class="playbook-features">
-          <li>Dashboard interactif — données de production, flux commerciaux, acteurs clés</li>
-          <li>Pipeline projets — Minim-Martap, Colomine, Ngovayang, Mbalam-Nabeba</li>
-          <li>Analyse du cadre juridique — Code Minier 2023 & décrets d'application</li>
-          <li>Régime fiscal & partage de production — guide investisseur</li>
-          <li>Cartographie EMAPE — formalisation et chaînes d'approvisionnement</li>
-          <li>Score CAGM & alignement Vision Minière Africaine</li>
-          <li>Architecture institutionnelle — SONAMINES, MINMIDT, cadastre minier</li>
-        </ul>
-        <p style="font-size:0.75rem; color: var(--text-muted); font-style: italic;">
-          Produit par StratMined Advisory pour le Baraza Mining Forum
-        </p>
+      <p class="reveal" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 2rem; line-height: 1.6;">
+        Deux publications de référence réservées aux participants inscrits — analyse sectorielle Cameroun et vision stratégique continentale.
+      </p>
+      <div class="documents-grid">
+        <!-- Document 1: Cameroon Mining Playbook -->
+        <div class="doc-card reveal">
+          <div class="doc-number">DOC 01</div>
+          <div class="badge">EXCLUSIF</div>
+          <h3>Cameroon Mining Playbook 2026</h3>
+          <div class="doc-author">Par StratMined Advisory</div>
+          <ul class="playbook-features">
+            <li>Dashboard interactif — données de production, flux commerciaux, acteurs clés</li>
+            <li>Pipeline projets — Minim-Martap, Colomine, Ngovayang, Mbalam-Nabeba</li>
+            <li>Cadre juridique & fiscal — Code Minier 2023, régime investisseur</li>
+            <li>Cartographie EMAPE & architecture institutionnelle</li>
+          </ul>
+          <p class="doc-meta">Guide opérationnel · Focus Cameroun</p>
+        </div>
+        <!-- Document 2: Rapport stratégique Dr. Armand Ngansop -->
+        <div class="doc-card reveal">
+          <div class="doc-number">DOC 02</div>
+          <div class="badge">NOUVEAU</div>
+          <h3>Transformer l'Industrie Minière Africaine</h3>
+          <div class="doc-author">Par Dr. Armand Ngansop — CTID Consulting</div>
+          <ul class="playbook-features">
+            <li>Stratégie intégrée sur 10 ans — de l'exportation brute à la transformation locale</li>
+            <li>Trois piliers : industrialisation, formation, financement innovant</li>
+            <li>Cas d'étude SONAMINES — feuille de route opérationnelle 2025-2035</li>
+            <li>Modèles comparés — Pays du Golfe, Chine, Brésil, Indonésie</li>
+          </ul>
+          <p class="doc-meta">Rapport stratégique · Vision continentale Afrique</p>
+        </div>
       </div>
       <!-- Dashboard Teaser -->
       <div class="dashboard-teaser reveal">
@@ -1908,7 +2009,7 @@ section {
     <div>
       <div class="form-container reveal" id="leadForm">
         <h3>Débloquez l'accès</h3>
-        <p class="form-sub">Remplissez le formulaire pour accéder au Dashboard interactif et télécharger le Playbook exclusif.</p>
+        <p class="form-sub">Remplissez le formulaire pour accéder au Dashboard interactif et recevoir les deux publications exclusives.</p>
         <form id="dashboardAccessForm" onsubmit="handleDashboardSubmit(event)">
           <div class="form-row">
             <div class="form-group">
