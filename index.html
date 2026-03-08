@@ -1098,9 +1098,10 @@ section {
   background: linear-gradient(145deg, var(--earth-mid), var(--slate));
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
-  padding: 2rem 2.5rem;
+  padding: 1.5rem 1.8rem;
   min-width: 200px;
   transition: all 0.3s;
+  text-align: center;
 }
 
 .tier-card:hover {
@@ -1111,15 +1112,40 @@ section {
 .tier-card .tier-name {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
   color: var(--gold);
   margin-bottom: 0.3rem;
 }
 
-.tier-card .tier-desc {
-  font-size: 0.8rem;
-  color: var(--text-muted);
+.tier-card .tier-price {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ivory);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.02em;
 }
+
+.tier-card .tier-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 0.6rem;
+}
+
+.tier-card .tier-slots {
+  font-size: 0.65rem;
+  font-family: 'Space Mono', monospace;
+  color: var(--gold-light);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.7;
+}
+
+.tier-titre { border-top: 3px solid var(--gold); }
+.tier-platinum { border-top: 3px solid #A8A8A8; }
+.tier-gold { border-top: 3px solid #CD7F32; }
+.tier-thematique { border-top: 3px solid var(--gold-dark); }
 
 /* ===== FOOTER ===== */
 .footer {
@@ -2129,21 +2155,29 @@ section {
     Associez votre marque à la plateforme de référence sur l'industrie minière responsable en Afrique Francophone.
   </p>
   <div class="sponsor-tiers reveal">
-    <div class="tier-card">
-      <div class="tier-name">Platine</div>
-      <div class="tier-desc">Visibilité maximale • Keynote • Field Trip VIP</div>
+    <div class="tier-card tier-titre">
+      <div class="tier-name">Partenaire Titre</div>
+      <div class="tier-price">10 000 000 FCFA</div>
+      <div class="tier-desc">Discours d'ouverture • Panel garanti • Logo dominant • Branding salle • 15 invitations VIP • Co-signature rapport</div>
+      <div class="tier-slots">1 place disponible</div>
     </div>
-    <div class="tier-card">
-      <div class="tier-name">Or</div>
-      <div class="tier-desc">Panel branding • Stand exclusif • Networking</div>
+    <div class="tier-card tier-platinum">
+      <div class="tier-name">Platinum</div>
+      <div class="tier-price">5 000 000 FCFA</div>
+      <div class="tier-desc">Participation panel • Logo majeur • 8 invitations • Table institutionnelle • Mention officielle</div>
+      <div class="tier-slots">2 places</div>
     </div>
-    <div class="tier-card">
-      <div class="tier-name">Argent</div>
-      <div class="tier-desc">Logo & mention • Accès participants • Rapport</div>
+    <div class="tier-card tier-gold">
+      <div class="tier-name">Gold</div>
+      <div class="tier-price">2 500 000 FCFA</div>
+      <div class="tier-desc">Logo sur supports • 5 invitations • Branding networking • Mention collective</div>
+      <div class="tier-slots">4 places</div>
     </div>
-    <div class="tier-card">
-      <div class="tier-name">Partenaire Media</div>
-      <div class="tier-desc">Couverture presse • Interviews • Co-branding</div>
+    <div class="tier-card tier-thematique">
+      <div class="tier-name">Sponsor Thématique</div>
+      <div class="tier-price">2 500 000 FCFA</div>
+      <div class="tier-desc">Branding panel exclusif • Introduction 3-5 min • Logo associé au thème • 4 invitations</div>
+      <div class="tier-slots">4 places</div>
     </div>
   </div>
   <div style="margin-top: 2.5rem;" class="reveal">
